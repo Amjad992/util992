@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "description": "A simple utility library to perform repetitive tasks without much configurations and code.",
   "main": "index.js",
-  "dependencies": {
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Amjad992/util992.git"
@@ -15,6 +11,7 @@
     "Utilities",
     "API"
   ],
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
