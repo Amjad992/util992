@@ -1,36 +1,31 @@
 const v = require('../values');
-const {notSupportedMessage} = require('../values/general');
-
 const dev = require('./dev');
 
-// -------------------------- getNotSupported
-module.exports.notSupportedKey = (key) => {
-  try {
-    dev.setValue(v.g, 'notSupportedKey', key);
-  } catch (err) {
-    throw err;
-  }
-};
-module.exports.notSupportedMessage = (message) => {
-  try {
-    dev.setValue(v.g, 'notSupportedMessage', message);
-  } catch (err) {
-    throw err;
-  }
-};
-// -------------------------- getNotSupported
-
-// -------------------------- hitInHouseEndponint
-/** Set the Base URL for this service to be used whenever in house endpoint needs to be hit for notification or activation of a process
- * @param  {} baseURL - The Base URL of the service (e.g. https://google.com)
+/** Set a specific key inside values general object with a value
+ * @param  {string} key - The key string
+ * @param  {object} value - The value
+ * @returns Return undefined if set successfully set, or throws an error if no value passed
  */
-module.exports.hitInHouseEndponintBaseURL = (baseURL) => {
-  try {
-    // Remove the last character if the baseURL has / at the end (e.g. https://google.com/)
-    if (baseURL[baseURL.length] == '/') baseURL.slice(0, -1);
-    dev.setValue(v.g, 'hitInHouseEndponintBaseURL', baseURL);
-  } catch (err) {
-    throw err;
-  }
-};
-// -------------------------- hitInHouseEndponint
+setValue = (key, value) => dev.setValue(v.g, key, value);
+
+// -------------------------- notSupported // --------------------------
+/** Set the key to be used on the notSupported endpoint response
+ * @param  {string} key - The key of the clarification message (e.g. description)
+ */
+module.exports.notSupportedKey = (key) => setValue('notSupportedKey', key);
+
+/** Set the message to be used on the notSupported endpoint response
+ * @param  {string} message - The message to clarify this endpoint not supported (e.g. This endpoint is not supported)
+ */
+module.exports.notSupportedMessage = (message) =>
+  setValue('notSupportedMessage', message);
+// -------------------------- notSupported // --------------------------
+
+// -------------------------- hitInHouseEndpoint // --------------------------
+/** Set the Base URL for this service to be used whenever in house endpoint needs to be hit for notification or activation of a process
+ * @param  {string} baseURL - The Base URL of the service (e.g. https://google.com)
+ */
+module.exports.hitInHouseEndpointBaseURL = (baseURL) =>
+  setValue('hitInHouseEndpointBaseURL', baseURL);
+
+// -------------------------- hitInHouseEndpoint // --------------------------

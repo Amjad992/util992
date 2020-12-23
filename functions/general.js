@@ -1,8 +1,7 @@
-// const request = require(`request`);
-
 const axios = require('axios');
 
 const v = require(`../values`);
+const dev = require('./dev');
 
 const generalThis = this;
 
@@ -88,36 +87,31 @@ module.exports.sleep = async (milliseconds = 0) => {
 };
 
 /** Function used to hit an endpoint in this service to activate some actions (e.g. update, start scheduler ... etc)
- --- Before using this function, you would need to configure the base url using the function config.hitInHouseEndponintBaseURL
- * @param  {String} endpoint - The endpoint to be hit (e.g. /sample) // (Optional) //
+ --- Before using this function, you would need to configure the base url using the function config.hitInHouseEndpointBaseURL
+ * @param  {String} endpoint - The endpoint to be hit (e.g. sample) // (Optional) //
  * @param  {String} method - The method to be used (get, post, put, patch, delete) // (Optional) //
  * @param  {Object} body - The body to include // (Optional) //
  * @returns - Return a response following this module's format (response will be created using func.constructResponse functionality)
  ** In case of error, it will throw an exception with an object following the same format
  */
-module.exports.hitInHouseEndponint = async (
-  endpoint = '/',
+module.exports.hitInHouseEndpoint = async (
+  endpoint = '',
   method = 'get',
   body = {}
 ) => {
-  const url = `${v.g.hitInHouseEndponintBaseURL}/${endpoint}`;
+  //
+  if (endpoint[0] === '/') endpoint = endpoint.substring(1);
+  const url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
 
-  const baseURLNotSet = v.g.hitInHouseEndponintBaseURL === '';
   try {
-    if (baseURLNotSet) {
-      const errorObj = generalThis.constructResponse(
-        false,
-        400,
-        'hitInHouseEndponintBaseURL property is not set yet, please use the config.hitInHouseEndponintBaseURL function to do that first.'
-      );
-      throw errorObj;
-    }
+    dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
 
     const response = await axios({
       method: method.toLowerCase(method),
       url,
       data: JSON.stringify(body),
     });
+
     const resData = response.data;
 
     if (!resData.success) {
@@ -132,7 +126,7 @@ module.exports.hitInHouseEndponint = async (
       const resObj = generalThis.constructResponse(
         true,
         resData.code,
-        `Successfully hit the endpoint ${endpoint}`,
+        `Successfully hit the endpoint /${endpoint}`,
         resData
       );
       return resObj;

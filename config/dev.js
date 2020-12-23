@@ -1,9 +1,12 @@
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
- * @param  {} object
- * @param  {} value
+ * Set a specific key inside a an object with a value
+ * @param  {object} object - The parent object of the key
+ * @param  {string} key - The key string
+ * @param  {object} value - The value
+ * @returns Return undefined if set successfully set, or throws an error if no value passed
  */
 module.exports.setValue = (object, key, value) => {
   if (value) object[key] = value;
   else
-    throw `parameter has no value! If you need to keep the current value, then you don't need to call this function.\n Current Value is: ${v.g.notSupportedKey}`;
+    throw `parameter passed has no value! If you need to keep the current value, then you don't need to call this function.\nCurrent Value is: ${object[key]}`;
 };
