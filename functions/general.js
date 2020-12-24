@@ -5,11 +5,10 @@ const dev = require('./dev');
 
 const generalThis = this;
 
-/**
- * Return a JSON object with a key and a message stating that the method endpoint is not supported
+/** Return a JSON object with a key and a message stating that the method endpoint is not supported
  * @param  {string} method - The HTTP method not supported (e.g. POST) // (Optional) //
- * @param  {string} key - The indicative property key (e.g. error) // (Optional) //
- * @param  {string} message - The indicative property message (e.g. Some error message) // (Optional) //
+ * @param  {string} key - The indicative property key (e.g. error) // (Optional - configurable through the config.g object) //
+ * @param  {string} message - The indicative property message (e.g. Some error message) // (Optional - configurable through the config.g object) //
  * @returns {object} - A JSON object that has 2 keys, first is the method, and second is the indicative property
  **
  {
@@ -18,7 +17,7 @@ const generalThis = this;
  }
  */
 module.exports.endpointNotSupported = (
-  method = null,
+  method = undefined,
   key = v.g.notSupportedKey,
   message = v.g.notSupportedMessage
 ) => {
@@ -31,9 +30,9 @@ module.exports.endpointNotSupported = (
 /** Contstruct a unified response of success or failure, values not provided won't be included in the returned object
  * @param  {boolean} success - Is the response of success or failure // (Optional, default is true) //
  * @param  {boolean} code - The request code (can be used when it's a response of an API request)
- * @param  {string} message - Message of the response // (Optional, default is null) //
- * @param  {object} body - Body of the response or the error // (Optional, default is null) //
- * @param  {any} extraInfo - Any extra info to be included in the response, this can be used if request is successful however it doesn't have data and need to point that out (e.g. Although the request was successful, contact wasn't find, so it success would be true however extra info will say no contact found) // (Optional, default is null) //
+ * @param  {string} message - Message of the response // (Optional, default is undefined) //
+ * @param  {object} body - Body of the response or the error // (Optional, default is undefined) //
+ * @param  {any} extraInfo - Any extra info to be included in the response, this can be used if request is successful however it doesn't have data and need to point that out (e.g. Although the request was successful, contact wasn't find, so it success would be true however extra info will say no contact found) // (Optional, default is undefined) //
  * @returns - A JSON object holding four values indicating the status of the process, as well as provide more information if needed
   **
  {
@@ -58,29 +57,30 @@ module.exports.endpointNotSupported = (
 module.exports.constructResponse = (
   success = true,
   code = 200,
-  message = null,
-  body = null,
-  extraInfo = null
+  message = undefined,
+  body = undefined,
+  extraInfo = undefined
 ) => {
   let resObj = {
     success,
     code,
   };
 
-  message ? (resObj.message = message) : null;
-  body ? (resObj.body = body) : null;
-  extraInfo ? (resObj.extraInfo = extraInfo) : null;
+  message ? (resObj.message = message) : undefined;
+  body ? (resObj.body = body) : undefined;
+  extraInfo ? (resObj.extraInfo = extraInfo) : undefined;
 
   return resObj;
 };
 
 /** Halt execution of the program for some time
- * @param  {Integer} milliseconds - Time in milliseconds to halt the execution
+ * @async
+ * @param  {Integer} milliseconds - Time in milliseconds to halt the execution (Optional - Default is 1000 millisecond) //
  * @returns - Returns nothing
  */
-module.exports.sleep = async (milliseconds = 0) => {
+module.exports.sleep = async (milliseconds = 1000) => {
   const date = Date.now();
-  let currentDate = null;
+  let currentDate = undefined;
   do {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);
@@ -88,9 +88,10 @@ module.exports.sleep = async (milliseconds = 0) => {
 
 /** Function used to hit an endpoint in this service to activate some actions (e.g. update, start scheduler ... etc)
  --- Before using this function, you would need to configure the base url using the function config.hitInHouseEndpointBaseURL
- * @param  {String} endpoint - The endpoint to be hit (e.g. sample) // (Optional) //
- * @param  {String} method - The method to be used (get, post, put, patch, delete) // (Optional) //
- * @param  {Object} body - The body to include // (Optional) //
+ * @async
+ * @param  {String} endpoint - The endpoint to be hit (e.g. sample) // (Optional - Default is the empty string '') //
+ * @param  {String} method - The method to be used (get, post, put, patch, delete) // (Optional - Default is get) //
+ * @param  {Object} body - The body to include // (Optional - Default is empty object {}) //
  * @returns - Return a response following this module's format (response will be created using func.constructResponse functionality)
  ** In case of error, it will throw an exception with an object following the same format
  */
@@ -114,45 +115,36 @@ module.exports.hitInHouseEndpoint = async (
 
     const resData = response.data;
 
-    if (!resData.success) {
-      const errorObj = generalThis.constructResponse(
+    if (!resData.success)
+      throw generalThis.constructResponse(
         false,
         resData.code,
         `Error returned on hitting endpoint ${endpoint}`,
         resData
       );
-      throw errorObj;
-    } else {
-      const resObj = generalThis.constructResponse(
+    else
+      return generalThis.constructResponse(
         true,
         resData.code,
         `Successfully hit the endpoint /${endpoint}`,
         resData
       );
-      return resObj;
-    }
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw err;
   }
 };
 
 /** Function used to hit a url in an outside service with a simple non authenicated request, this can be used for webhooks with non-sensitive data
+ * @async
  * @param  {String} url - The url to hit with the request
  * @param  {String} method - The method to be used (get, post, put, patch, delete)
- * @param  {Object} body - The body to include (Optional)
+ * @param  {Object} body - The body to include  // (Optional - Default is empty object {}) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.hitURL = async (url, method = 'get', body = {}) => {
   try {
-    if (!url) {
-      const errorObj = generalThis.constructResponse(
-        false,
-        400,
-        'url parameter is not provided with the request'
-      );
-      throw errorObj;
-    }
+    dev.throwErrorIfValueNotPassed(url, 'url');
 
     const response = await axios({
       method: method.toLowerCase(method),
@@ -161,14 +153,18 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
     });
     const resData = response.data;
 
-    const resObj = generalThis.constructResponse(
+    return generalThis.constructResponse(
       true,
       response.code,
       `Successfully hit ${url}`,
       resData
     );
-    return resObj;
-  } catch (error) {
-    throw error;
+  } catch (err) {
+    throw generalFuncs.constructResponse(
+      false,
+      err.response.status,
+      err.message,
+      err.response.data
+    );
   }
 };

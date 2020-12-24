@@ -1,0 +1,21 @@
+functions to add:
+
+## Create ##
+createRecords
+recordsFromArray
+
+## Update ##
+recordsFromArray
+
+## Get ## 
+base
+table
+nRecordsOfTable
+baseRecoresIds
+
+## Delete ##
+base
+table
+clearRecords
+createIDsQueryString
+tenRecords

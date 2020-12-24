@@ -6,7 +6,9 @@ const dev = require('./dev');
  * @param  {object} value - The value
  * @returns Return undefined if set successfully set, or throws an error if no value passed
  */
-setValue = (key, value) => dev.setValue(v.g, key, value);
+function setValue(key, value) {
+  dev.setValue(v.g, key, value);
+}
 
 // -------------------------- notSupported // --------------------------
 /** Set the key to be used on the notSupported endpoint response
