@@ -11,6 +11,7 @@ const generalFuncs = require('../general');
  * @param {number} numberOfRecords = The number of records to be retrieved // (Optional - Default value is 100) //
  * @param {string} offset - The offset string provided by airtable response on the previous get records process // (Optional - Default undefined) //
  * @param {string} formula - The formula used to filter the arrays (This follows airtable format) // (Optional - Default undefined) //
+ * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
@@ -51,11 +52,13 @@ module.exports.nRecords = async (
 
     const resData = response.data;
     const records = resData.records;
+    console.log(resData);
     return generalFuncs.constructResponse(
       true,
       response.code,
       `Retrieved ${records.length} records from airtable`,
-      records
+      records,
+      resData.offset
     );
   } catch (err) {
     if (dev.isAxiosResponse(err)) {
