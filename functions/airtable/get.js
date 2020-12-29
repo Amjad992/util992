@@ -33,7 +33,7 @@ module.exports.nRecords = async (
 
     dev.throwErrorIfValueNotPassed(table, 'table');
 
-    let url = `${v.airtable.baseURL}${baseId}/${table}?`;
+    let url = `${baseURL}${baseId}/${table}?`;
     if (formula) url += `&filterByFormula=${formula}`;
 
     if (offset) {
@@ -58,11 +58,16 @@ module.exports.nRecords = async (
       records
     );
   } catch (err) {
-    throw generalFuncs.constructResponse(
-      false,
-      err.response.status,
-      err.message,
-      err.response.data
-    );
+    if (dev.isAxiosResponse(err)) {
+      throw generalFuncs.constructResponse(
+        false,
+        err.response.status,
+        err.message,
+        err.response.data
+      );
+    } else {
+      // if not axios then it's thrown because of an error in the parameters not provided or set
+      throw err;
+    }
   }
 };
