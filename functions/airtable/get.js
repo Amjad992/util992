@@ -17,7 +17,7 @@ const generalFuncs = require('../general');
  ** The body will have the records array (Can be empty array [] if no records found and the request will still be success)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
-module.exports.nRecordsOf = async (
+module.exports.nRecords = async (
   table,
   numberOfRecords = 100,
   offset = undefined,
