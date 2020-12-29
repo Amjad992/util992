@@ -32,7 +32,7 @@ module.exports.endpointNotSupported = (
  * @param  {boolean} code - The request code (can be used when it's a response of an API request)
  * @param  {string} message - Message of the response // (Optional, default is undefined) //
  * @param  {object} body - Body of the response or the error // (Optional, default is undefined) //
- * @param  {any} extraInfo - Any extra info to be included in the response, this can be used if request is successful however it doesn't have data and need to point that out (e.g. Although the request was successful, contact wasn't find, so it success would be true however extra info will say no contact found) // (Optional, default is undefined) //
+ * @param  {object} otherAttributes - Any extra attributes to be included in the response, this can be used if request is successful however it doesn't have data and need to point that out (e.g. Although the request was successful, contact wasn't find, so it success would be true however it will have an attribute that shows that no contact found) // (Optional, default is undefined) //
  * @returns - A JSON object holding four values indicating the status of the process, as well as provide more information if needed
   **
  {
@@ -42,7 +42,7 @@ module.exports.endpointNotSupported = (
    body: {
     data: []
    },
-   extraInfo: 'No contact found with id 1'
+   contactFound: false
  }
  **
  {
@@ -59,7 +59,7 @@ module.exports.constructResponse = (
   code = 200,
   message = undefined,
   body = undefined,
-  extraInfo = undefined
+  otherAttributes = undefined
 ) => {
   let resObj = {
     success,
@@ -68,7 +68,11 @@ module.exports.constructResponse = (
 
   message ? (resObj.message = message) : undefined;
   body ? (resObj.body = body) : undefined;
-  extraInfo ? (resObj.extraInfo = extraInfo) : undefined;
+
+  for (key in otherAttributes) {
+    resObj[key] = otherAttributes[key];
+  }
+  // extraInfo ? (resObj.extraInfo = extraInfo) : undefined;
 
   return resObj;
 };
