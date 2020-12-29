@@ -89,3 +89,12 @@ module.exports.throwErrorIfValueNotPassed = (value, propertyName) => {
   if (isValueNotSet(value)) throw errorPropetryNotPassed(propertyName);
   else return;
 };
+
+/** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
+ * Check if the response or error returned is coming from axios or not (It might be error thrown using our internal construct response function)
+ * @param  {object} errOrRes - The error or repsonse to check if it comes from Axios error or internal error thrown
+ */
+module.exports.isAxiosResponse = (errOrRes) => {
+  if (errOrRes.response) return true;
+  else return false;
+};
