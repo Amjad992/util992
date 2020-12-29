@@ -72,8 +72,6 @@ module.exports.constructResponse = (
   for (key in otherAttributes) {
     resObj[key] = otherAttributes[key];
   }
-  // extraInfo ? (resObj.extraInfo = extraInfo) : undefined;
-
   return resObj;
 };
 

@@ -52,7 +52,6 @@ module.exports.nRecords = async (
 
     const resData = response.data;
     const records = resData.records;
-    console.log(resData);
     return generalFuncs.constructResponse(
       true,
       response.code,
@@ -61,16 +60,6 @@ module.exports.nRecords = async (
       resData.offset
     );
   } catch (err) {
-    if (dev.isAxiosResponse(err)) {
-      throw generalFuncs.constructResponse(
-        false,
-        err.response.status,
-        err.message,
-        err.response.data
-      );
-    } else {
-      // if not axios then it's thrown because of an error in the parameters not provided or set
-      throw err;
-    }
+    throw dev.formatError(err);
   }
 };
