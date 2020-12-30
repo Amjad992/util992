@@ -12,7 +12,7 @@ const generalFuncs = require('../general');
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
- ** The body will have the records array (Can be empty array [] if no records found and the request will still be success)
+ ** The body will have a JSON object with an attribute for each tables, and each attribute value will be an array of its records (Can be empty array [] if no records found and the request will still be success)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.base = async (
@@ -61,7 +61,7 @@ module.exports.base = async (
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
- ** The body will have the records array (Can be empty array [] if no records found and the request will still be success)
+ ** The body will have a JSON object with an attribute for each tables, and each attribute value will be an array of its records id (Can be empty array [] if no records found and the request will still be success)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.baseRecoresIds = async (
@@ -71,6 +71,11 @@ module.exports.baseRecoresIds = async (
   baseId = v.airtable.baseId
 ) => {
   try {
+    dev.throwErrorIfValueNotPassedAndNotSet(
+      tablesArray,
+      'airtable',
+      'tablesArray'
+    );
     const baseRes = await this.base(tablesArray, apiKey, baseURL, baseId);
 
     let idsObj = {};
@@ -107,14 +112,12 @@ module.exports.baseRecoresIds = async (
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.table = async (
-  tableName,
+  tableName = v.airtable.tablesArray,
   formula = undefined,
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
-  let iterationCounter = 1;
-
   try {
     let airtableResponse = await this.nRecords(
       tableName,
@@ -128,8 +131,6 @@ module.exports.table = async (
     offset = airtableResponse.offset;
 
     while (offset) {
-      ++iterationCounter;
-
       airtableSingleResponse = await this.nRecords(
         tableName,
         undefined,
@@ -195,7 +196,7 @@ module.exports.nRecords = async (
       method: 'get',
       url,
       headers: {
-        Authorization: 'Bearer ' + apiKey,
+        Authorization: `Bearer ${apiKey}`,
       },
     });
 
