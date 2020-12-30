@@ -27,3 +27,10 @@ module.exports.baseURL = (baseURL) => setValue('baseURL', baseURL);
  * @param  {string} baseId - The base id
  */
 module.exports.baseId = (baseId) => setValue('baseId', baseId);
+
+// -------------------------- tablesArray // --------------------------
+/** Set the key to be used on the tablesArray for airtable
+ * @param  {string} tablesArray - The tables array
+ */
+module.exports.tablesArray = (tablesArray) =>
+  setValue('tablesArray', tablesArray);

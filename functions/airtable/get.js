@@ -7,7 +7,7 @@ const generalFuncs = require('../general');
 
 /** Return a base with multiple tables from airtable
  * @async
- * @param {Array} tablesArr - An Array including the names of all the tables in the base
+ * @param {Array} tablesArray - An Array including the names of all the tables in the base
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -16,17 +16,22 @@ const generalFuncs = require('../general');
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.base = async (
-  tablesArr,
+  tablesArray = v.airtable.tablesArray,
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
   try {
     let resCode;
-    dev.throwErrorIfValueNotPassed(tablesArr, 'tablesArr');
+    dev.throwErrorIfValueNotPassedAndNotSet(
+      tablesArray,
+      'airtable',
+      'tablesArray'
+    );
+
     let base = {};
-    for (table in tablesArr) {
-      tableName = tablesArr[table];
+    for (table in tablesArray) {
+      tableName = tablesArray[table];
       const tableRes = await this.table(
         tableName,
         undefined,
@@ -41,7 +46,7 @@ module.exports.base = async (
     return generalFuncs.constructResponse(
       true,
       resCode,
-      `Retrieved ${tablesArr} tables records from airtable`,
+      `Retrieved ${tablesArray} tables records from airtable`,
       base
     );
   } catch (err) {
@@ -51,7 +56,7 @@ module.exports.base = async (
 
 /** Return a record ids of base with multiple tables from airtable
  * @async
- * @param {Array} tablesArr - An Array including the names of all the tables in the base
+ * @param {Array} tablesArray - An Array including the names of all the tables in the base
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -60,20 +65,17 @@ module.exports.base = async (
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.baseRecoresIds = async (
-  tablesArr,
+  tablesArray = v.airtable.tablesArray,
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
   try {
-    let resCode;
-    dev.throwErrorIfValueNotPassed(tablesArr, 'tablesArr');
-
-    const baseRes = await this.base(tablesArr, apiKey, baseURL, baseId);
+    const baseRes = await this.base(tablesArray, apiKey, baseURL, baseId);
 
     let idsObj = {};
-    for (i in tablesArr) {
-      const tableName = tablesArr[i];
+    for (i in tablesArray) {
+      const tableName = tablesArray[i];
       const records = baseRes.body[tableName];
       idsObj[tableName] = [];
 
@@ -85,7 +87,7 @@ module.exports.baseRecoresIds = async (
     return generalFuncs.constructResponse(
       true,
       undefined,
-      `Retrieved ${tablesArr} tables records ids from airtable`,
+      `Retrieved ${tablesArray} tables records ids from airtable`,
       idsObj
     );
   } catch (err) {
