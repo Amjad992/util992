@@ -81,7 +81,7 @@ function errorPropetryNotPassed(propertyName) {
 
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
  * Throws an error if a parameters that is necessary to be passed is not passed to the function
- * @param  {string} value - The value to check if provided or not
+ * @param  {any} value - The value to check if provided or not
  * @param  {string} propertyName - The property name that is not passed
  * @returns - Throws an error if not set, or return undefined if set
  */
