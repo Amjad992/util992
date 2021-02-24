@@ -64,9 +64,6 @@ module.exports.constructResponse = (
   let resObj = {
     success,
     code,
-    message,
-    body,
-    otherAttributes,
   };
 
   message ? (resObj.message = message) : undefined;
@@ -172,4 +169,55 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
       err.response.data
     );
   }
+};
+/** Splits an array into chunks then perform an action on all those chunks, it will perform all the
+ * @param  {function} action - The action/function to be repeated on the array chunks
+ * @param  {object} array - The array to split and perform action on
+ * @param  {integer} desiredLength - The length of each chunk // (Optional - Default is 1) //
+ * @param  {object} parameters - The parameters object to be passed to the action every time // (Optional - Default is empty object {}) //
+ * @param  {integer} sleepPeriodInMilliseconds - The time to wait between each action performance // (Optional - Default is 1000 milliseconds) //
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** In case of error, it will throw an exception with an object following the same format
+ */
+module.exports.performActionForSubArrays = async (
+  action,
+  array,
+  desiredLength = 1,
+  parameters = null,
+  sleepPeriodInMilliseconds = 1000
+) => {
+  dev.throwErrorIfValueNotPassed(action, 'action');
+  dev.throwErrorIfValueNotPassed(array, 'array');
+
+  let responsesArray = [];
+  let iteration = 0;
+  let arrayLength = array.length;
+
+  while (arrayLength > 0) {
+    try {
+      chunk = array.splice(0, desiredLength);
+
+      if (parameters)
+        responsesArray[iteration] = await action(chunk, parameters);
+      else responsesArray[iteration] = await action(chunk);
+
+      iteration += 1;
+
+      arrayLength = arrayLength - desiredLength;
+    } catch (error) {
+      const errorObj = generalThis.constructResponse(
+        false,
+        `Failed performing action in interation ${iteration}`,
+        error
+      );
+      throw errorObj;
+    }
+
+    await this.sleep(sleepPeriodInMilliseconds);
+  }
+
+  return generalThis.constructResponse(
+    true,
+    `Successfully performed action $${iteration} times`
+  );
 };
