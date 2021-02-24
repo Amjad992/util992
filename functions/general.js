@@ -64,6 +64,9 @@ module.exports.constructResponse = (
   let resObj = {
     success,
     code,
+    message,
+    body,
+    otherAttributes,
   };
 
   message ? (resObj.message = message) : undefined;
