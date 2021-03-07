@@ -135,8 +135,8 @@ module.exports.table = async (
   try {
     let airtableResponse = await this.nRecords(
       tableName,
-      undefined,
-      undefined,
+      null,
+      null,
       formula,
       apiKey,
       baseURL,
@@ -147,7 +147,7 @@ module.exports.table = async (
     while (offset) {
       airtableSingleResponse = await this.nRecords(
         tableName,
-        undefined,
+        null,
         offset,
         formula,
         apiKey,
@@ -173,7 +173,7 @@ module.exports.table = async (
 /** Return a number of records from a table
  * @async
  * @param {string} table - The table name
- * @param {number} numberOfRecords = The number of records to be retrieved with maximum of a 100 records// (Optional - Default value is 100) //
+ * @param {number} numberOfRecords = The number of records to be retrieved, if not passed it will return all records of a table
  * @param {string} offset - The offset string provided by airtable response on the previous get records process // (Optional - Default undefined) //
  * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default undefined) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
@@ -185,7 +185,7 @@ module.exports.table = async (
  */
 module.exports.nRecords = async (
   tableName,
-  numberOfRecords = 100,
+  numberOfRecords,
   offset = undefined,
   formula = undefined,
   apiKey = v.airtable.apiKey,
@@ -194,20 +194,23 @@ module.exports.nRecords = async (
 ) => {
   try {
     dev.throwErrorIfValueNotPassed(tableName, 'tableName');
-
-    if (numberOfRecords > 100 || numberOfRecords < 1) {
-      throw generalFuncs.constructResponse(
-        false,
-        400,
-        'number of records has to be between 1-100'
-      );
+    if (numberOfRecords !== null) {
+      if (numberOfRecords <= 0 || numberOfRecords > 100)
+        throw generalFuncs.constructResponse(
+          false,
+          400,
+          'number of records has to be between 1 and 100 or pass null to get all the records'
+        );
     }
 
     dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
     dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
     dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
 
-    let url = `${baseURL}${baseId}/${tableName}?maxRecords=${numberOfRecords}`;
+    let url = `${baseURL}${baseId}/${tableName}?`;
+
+    if (numberOfRecords) url += `&maxRecords=${numberOfRecords}`;
+
     if (formula) url += `&filterByFormula=${formula}`;
 
     if (offset) {
