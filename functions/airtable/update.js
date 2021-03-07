@@ -31,20 +31,18 @@ module.exports.records = async (
   dev.throwErrorIfValueNotPassed(recordsArray, 'recordsArray');
 
   try {
-    let toCreateRecordsArray = [];
+    let toUpdateRecordsArray = [];
     for (i in recordsArray) {
-      toCreateRecordsArray.push({
-        fields: recordsArray[i],
-      });
+      toUpdateRecordsArray.push(recordsArray[i]);
     }
 
     const url = `${baseURL}${baseId}/${tableName}`;
     const body = {
-      records: toCreateRecordsArray,
+      records: toUpdateRecordsArray,
     };
 
     const response = await axios({
-      method: 'post',
+      method: 'patch',
       url,
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -57,7 +55,7 @@ module.exports.records = async (
     return generalFuncs.constructResponse(
       true,
       response.code,
-      `Successfully set ${records.length} records in airtable`,
+      `Successfully updated ${records.length} records in airtable`,
       records
     );
   } catch (err) {
