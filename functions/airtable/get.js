@@ -21,13 +21,17 @@ module.exports.base = async (
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
+  dev.throwErrorIfValueNotPassedAndNotSet(
+    tablesArray,
+    'airtable',
+    'tablesArray'
+  );
+  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
+  dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
+  dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
+
   try {
     let resCode;
-    dev.throwErrorIfValueNotPassedAndNotSet(
-      tablesArray,
-      'airtable',
-      'tablesArray'
-    );
 
     let base = {};
     for (table in tablesArray) {
@@ -70,12 +74,16 @@ module.exports.baseRecoresIds = async (
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
+  dev.throwErrorIfValueNotPassedAndNotSet(
+    tablesArray,
+    'airtable',
+    'tablesArray'
+  );
+  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
+  dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
+  dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
+
   try {
-    dev.throwErrorIfValueNotPassedAndNotSet(
-      tablesArray,
-      'airtable',
-      'tablesArray'
-    );
     const baseRes = await this.base(tablesArray, apiKey, baseURL, baseId);
 
     let idsObj = {};
@@ -112,12 +120,18 @@ module.exports.baseRecoresIds = async (
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.table = async (
-  tableName = v.airtable.tablesArray,
+  tableName,
   formula = undefined,
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
+  dev.throwErrorIfValueNotPassed(tableName, 'tableName');
+
+  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
+  dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
+  dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
+
   try {
     let airtableResponse = await this.nRecords(
       tableName,
@@ -170,7 +184,7 @@ module.exports.table = async (
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.nRecords = async (
-  table,
+  tableName,
   numberOfRecords = 100,
   offset = undefined,
   formula = undefined,
@@ -179,13 +193,13 @@ module.exports.nRecords = async (
   baseId = v.airtable.baseId
 ) => {
   try {
+    dev.throwErrorIfValueNotPassed(tableName, 'tableName');
+
     dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
-    dev.throwErrorIfValueNotSet('airtable', 'baseURL');
+    dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
     dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
 
-    dev.throwErrorIfValueNotPassed(table, 'table');
-
-    let url = `${baseURL}${baseId}/${table}?`;
+    let url = `${baseURL}${baseId}/${tableName}?`;
     if (formula) url += `&filterByFormula=${formula}`;
 
     if (offset) {

@@ -23,12 +23,12 @@ module.exports.records = async (
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
+  dev.throwErrorIfValueNotPassed(tableName, 'tableName');
+  dev.throwErrorIfValueNotPassed(recordsArray, 'recordsArray');
+
   dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
   dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
   dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
-
-  dev.throwErrorIfValueNotPassed(tableName, 'tableName');
-  dev.throwErrorIfValueNotPassed(recordsArray, 'recordsArray');
 
   try {
     let toUpdateRecordsArray = [];
