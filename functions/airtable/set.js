@@ -5,7 +5,7 @@ const dev = require('../dev');
 
 const generalFuncs = require('../general');
 
-/** Return a base with multiple tables from airtable
+/** Creates records passed inside airtable
  * @async
  * @param {string} tableName - The table name
  * @param {Array} recordsArray - An array of maximum 10 JSON elements that is following that specific airtable base fields nameing conventions, if column not needed then simply do not include it in the JSON object of that record

@@ -5,14 +5,14 @@ const dev = require('../dev');
 
 const generalFuncs = require('../general');
 
-/** Return a base with multiple tables from airtable
+/** Get a base records from multiple tables in airtable
  * @async
  * @param {Array} tablesArray - An Array including the names of all the tables in the base
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
- ** The body will have a JSON object with an attribute for each tables, and each attribute value will be an array of its records (Can be empty array [] if no records found and the request will still be success)
+ ** The body will have a JSON object with a key for each table, and each attribute value will be an array of its records (Can be empty array [] if no records found and the request will still be success)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.base = async (
@@ -65,7 +65,7 @@ module.exports.base = async (
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
- ** The body will have a JSON object with an attribute for each tables, and each attribute value will be an array of its records id (Can be empty array [] if no records found and the request will still be success)
+ ** The body will have a JSON object with a key for each table, and each attribute value will be an array of its records id (Can be empty array [] if no records found and the request will still be success)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
 module.exports.baseRecoresIds = async (
