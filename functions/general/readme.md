@@ -1,5 +1,7 @@
 # **General Functions**
 
+[Go Back to Home](../../readme.md)
+
 ## **_Return JSON Endpoint Not Supported_**
 
 ### general.endpointNotSupported
