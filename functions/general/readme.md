@@ -1,6 +1,6 @@
 # **General Functions**
 
-[Go Back to Home](../../)
+[Go Back to Home](https://github.com/Amjad992/util992)
 
 ## **_Return JSON Endpoint Not Supported_**
 
