@@ -59,7 +59,7 @@ module.exports.constructResponse = (
   code = 200,
   message = null,
   body = null,
-  otherAttributes = null
+  otherAttributesObj = null
 ) => {
   let resObj = {
     success,
@@ -69,8 +69,8 @@ module.exports.constructResponse = (
   message ? (resObj.message = message) : null;
   body ? (resObj.body = body) : null;
 
-  for (key in otherAttributes) {
-    resObj[key] = otherAttributes[key];
+  for (key in otherAttributesObj) {
+    resObj[key] = otherAttributesObj[key];
   }
   return resObj;
 };
@@ -207,6 +207,7 @@ module.exports.performActionForSubArrays = async (
     } catch (error) {
       const errorObj = generalThis.constructResponse(
         false,
+        error.code,
         `Failed performing action in interation ${iteration}`,
         error
       );
@@ -220,4 +221,28 @@ module.exports.performActionForSubArrays = async (
     true,
     `Successfully performed action $${iteration} times`
   );
+};
+
+/** Check if the object passed is an array or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is array
+ */
+module.exports.isArray = async (object) => {
+  return object.constructor === Array;
+};
+
+/** Check if the object passed is an empty array or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is an empty array
+ */
+module.exports.isEmptyArray = async (object) => {
+  return object.constructor === Array && object.length === 0;
+};
+
+/** Check if the object passed is an empty string
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is an empty string
+ */
+module.exports.isEmptyString = async (object) => {
+  return object === '';
 };

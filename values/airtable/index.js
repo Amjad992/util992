@@ -4,3 +4,5 @@ module.exports = {
   baseId: null,
   tablesArray: [],
 };
+
+module.exports.waitBetweenRequestsInMilliSeconds = 333;

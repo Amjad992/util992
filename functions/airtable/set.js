@@ -4,11 +4,12 @@ const v = require(`../../values`);
 const dev = require('../dev');
 
 const generalFuncs = require('../general');
+const airtableDev = require('../airtable/dev');
 
 /** Creates records passed inside airtable
  * @async
  * @param {string} tableName - The table name
- * @param {Array} recordsArray - An array of maximum 10 JSON elements that is following that specific airtable base fields nameing conventions, if column not needed then simply do not include it in the JSON object of that record
+ * @param {Array} recordsArray - An array of maximum 10 JSON elements that is following that specific airtable base fields naming conventions, if column not needed then simply do not include it in the JSON object of that record
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -23,44 +24,87 @@ module.exports.records = async (
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
 ) => {
-  dev.throwErrorIfValueNotPassed(tableName, 'tableName');
-  dev.throwErrorIfValueNotPassed(recordsArray, 'recordsArray');
-
   dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'airtable', 'apiKey');
   dev.throwErrorIfValueNotPassedAndNotSet(baseURL, 'airtable', 'baseURL');
   dev.throwErrorIfValueNotPassedAndNotSet(baseId, 'airtable', 'baseId');
 
+  dev.throwErrorIfValueNotPassed(tableName, 'tableName');
+
+  if (await generalFuncs.isEmptyArray(recordsArray)) {
+    return generalFuncs.constructResponse(
+      true,
+      200,
+      `recordsArray is empty`,
+      []
+    );
+  }
+
+  dev.throwErrorIfValueNotPassed(recordsArray, 'recordsArray');
+
   try {
-    let toCreateRecordsArray = [];
-    for (i in recordsArray) {
-      toCreateRecordsArray.push({
-        fields: recordsArray[i],
-      });
-    }
+    let statusCode;
+    let recordsCreateddArray = [];
 
-    const url = `${baseURL}${baseId}/${tableName}`;
-    const body = {
-      records: toCreateRecordsArray,
-    };
+    // let toCreateRecordsArray = [];
+    // for (i in recordsArray) {
+    //   toCreateRecordsArray.push({
+    //     fields: recordsArray[i],
+    //   });
+    // }
+    await generalFuncs.performActionForSubArrays(
+      async (chunk, {tableName, apiKey, baseURL, baseId}) => {
+        const singleResponse = await airtableDev.createMax10Records(
+          tableName,
+          chunk,
+          apiKey,
+          baseURL,
+          baseId
+        );
+        statusCode = singleResponse.code;
 
-    const response = await axios({
-      method: 'post',
-      url,
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
+        recordsCreateddArray = [
+          ...recordsCreateddArray,
+          ...singleResponse.body,
+        ];
       },
-      data: body,
-    });
-    const resData = response.data;
-    const records = resData.records;
+      recordsArray,
+      10,
+      {tableName, apiKey, baseURL, baseId},
+      v.airtable.waitBetweenRequestsInMilliSeconds
+    );
 
     return generalFuncs.constructResponse(
       true,
-      response.code,
-      `Successfully set ${records.length} records in airtable`,
-      records
+      statusCode,
+      `Successfully updated ${recordsCreateddArray.length} records in table ${tableName}`,
+      recordsCreateddArray
     );
   } catch (err) {
     throw dev.formatError(err);
   }
+  //   const url = `${baseURL}${baseId}/${tableName}`;
+  //   const body = {
+  //     records: toCreateRecordsArray,
+  //   };
+
+  //   const response = await axios({
+  //     method: 'post',
+  //     url,
+  //     headers: {
+  //       Authorization: `Bearer ${apiKey}`,
+  //     },
+  //     data: body,
+  //   });
+  //   const resData = response.data;
+  //   const records = resData.records;
+
+  //   return generalFuncs.constructResponse(
+  //     true,
+  //     response.code,
+  //     `Successfully set ${records.length} records in airtable`,
+  //     records
+  //   );
+  // } catch (err) {
+  //   throw dev.formatError(err);
+  // }
 };
