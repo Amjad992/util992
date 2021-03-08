@@ -1,6 +1,6 @@
 # **General Functions**
 
-[Go Back to Home](../../readme.md)
+[Go Back to Home](../../)
 
 ## **_Return JSON Endpoint Not Supported_**
 

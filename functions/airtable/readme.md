@@ -1,6 +1,6 @@
 # **Airtable Functions**
 
-[Go Back to Home](../../readme.md)
+[Go Back to Home](../../)
 
 ## There are some required values to set becore using Airtable functions
 
