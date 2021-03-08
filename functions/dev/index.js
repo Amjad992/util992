@@ -1,8 +1,8 @@
 //-- IMPORTANT - It's actually used in throwErrorIfValueNotSet function eval
-const v = require('../values');
+const v = require('../../values');
 //-- IMPORTANT - so don't delete it under the impression that it's not used
 
-const generalFuncs = require('./general');
+const generalFuncs = require('../general');
 
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
  * Check if the value is not set (This includes empty strings and arrays)

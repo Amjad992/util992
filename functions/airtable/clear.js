@@ -5,7 +5,7 @@ const dev = require('../dev');
 
 const generalFuncs = require('../general');
 const airtableGet = require('./get');
-const airtableDev = require('../airtable/dev');
+const airtableDev = require('../dev/airtable');
 
 /** Remove a number of records from a table
  * @async
@@ -183,7 +183,6 @@ module.exports.base = async (
       tableName = tablesArray[table];
 
       let tableRes = await this.table(tableName, apiKey, baseURL, baseId);
-      console.log(tableRes);
       base[tableName] = tableRes;
       statusCode = tableRes.code;
     }

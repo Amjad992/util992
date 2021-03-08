@@ -4,7 +4,7 @@ const v = require(`../../values`);
 const dev = require('../dev');
 
 const generalFuncs = require('../general');
-const airtableDev = require('../airtable/dev');
+const airtableDev = require('../dev/airtable');
 
 /** Updates records passed inside airtable
  * @async

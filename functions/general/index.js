@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const v = require(`../values`);
-const dev = require('./dev');
+const v = require(`../../values`);
+const dev = require('../dev');
 
 const generalThis = this;
 
@@ -108,7 +108,6 @@ module.exports.hitInHouseEndpoint = async (
 
   try {
     dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
-
     const response = await axios({
       method: method.toLowerCase(method),
       url,

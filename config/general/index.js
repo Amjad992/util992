@@ -1,5 +1,5 @@
-const v = require('../values');
-const dev = require('./dev');
+const v = require('../../values');
+const dev = require('../dev');
 
 /** Set a specific key inside values general object with a value
  * @param  {string} key - The key string
