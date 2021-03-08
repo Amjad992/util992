@@ -1,6 +1,6 @@
 module.exports = {
-  apiKey: undefined,
+  apiKey: null,
   baseURL: 'https://api.airtable.com/v0/',
-  baseId: undefined,
+  baseId: null,
   tablesArray: [],
 };

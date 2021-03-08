@@ -4,5 +4,4 @@ const v = require('./values');
 module.exports = {
   config,
   funcs,
-  v,
 };

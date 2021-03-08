@@ -119,7 +119,7 @@ module.exports.table = async (
       recordsIdsArray,
       10,
       {tableName, apiKey, baseURL, baseId},
-      v.dev.airtableWaitBetweenRequestsInMilliSeconds * 3
+      v.airtable.waitBetweenRequestsInMilliSeconds
     );
 
     return generalFuncs.constructResponse(

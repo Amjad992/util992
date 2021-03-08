@@ -17,7 +17,7 @@ const generalThis = this;
  }
  */
 module.exports.endpointNotSupported = (
-  method = undefined,
+  method = null,
   key = v.g.notSupportedKey,
   message = v.g.notSupportedMessage
 ) => {
@@ -30,9 +30,9 @@ module.exports.endpointNotSupported = (
 /** Contstruct a unified response of success or failure, values not provided won't be included in the returned object
  * @param  {boolean} success - Is the response of success or failure // (Optional, default is true) //
  * @param  {boolean} code - The request code (can be used when it's a response of an API request)
- * @param  {string} message - Message of the response // (Optional, default is undefined) //
- * @param  {object} body - Body of the response or the error // (Optional, default is undefined) //
- * @param  {object} otherAttributes - Any extra attributes to be included in the response, this can be used if request is successful however it doesn't have data and need to point that out (e.g. Although the request was successful, contact wasn't find, so it success would be true however it will have an attribute that shows that no contact found) // (Optional, default is undefined) //
+ * @param  {string} message - Message of the response // (Optional, default is null) //
+ * @param  {object} body - Body of the response or the error // (Optional, default is null) //
+ * @param  {object} otherAttributes - Any extra attributes to be included in the response, this can be used if request is successful however it doesn't have data and need to point that out (e.g. Although the request was successful, contact wasn't find, so it success would be true however it will have an attribute that shows that no contact found) // (Optional, default is null) //
  * @returns - A JSON object holding four values indicating the status of the process, as well as provide more information if needed
   **
  {
@@ -57,17 +57,17 @@ module.exports.endpointNotSupported = (
 module.exports.constructResponse = (
   success = true,
   code = 200,
-  message = undefined,
-  body = undefined,
-  otherAttributes = undefined
+  message = null,
+  body = null,
+  otherAttributes = null
 ) => {
   let resObj = {
     success,
     code,
   };
 
-  message ? (resObj.message = message) : undefined;
-  body ? (resObj.body = body) : undefined;
+  message ? (resObj.message = message) : null;
+  body ? (resObj.body = body) : null;
 
   for (key in otherAttributes) {
     resObj[key] = otherAttributes[key];
@@ -82,7 +82,7 @@ module.exports.constructResponse = (
  */
 module.exports.sleep = async (milliseconds = 1000) => {
   const date = Date.now();
-  let currentDate = undefined;
+  let currentDate = null;
   do {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);

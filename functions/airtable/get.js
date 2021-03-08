@@ -38,7 +38,7 @@ module.exports.base = async (
       tableName = tablesArray[table];
       const tableRes = await this.table(
         tableName,
-        undefined,
+        null,
         apiKey,
         baseURL,
         baseId
@@ -99,7 +99,7 @@ module.exports.baseRecoresIds = async (
 
     return generalFuncs.constructResponse(
       true,
-      undefined,
+      null,
       `Retrieved ${tablesArray} tables records ids from airtable`,
       idsObj
     );
@@ -111,7 +111,7 @@ module.exports.baseRecoresIds = async (
 /** Return a table records from airtable
  * @async
  * @param {string} tableName - The table name
- * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default undefined) //
+ * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default null) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -121,7 +121,7 @@ module.exports.baseRecoresIds = async (
  */
 module.exports.table = async (
   tableName,
-  formula = undefined,
+  formula = null,
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
@@ -174,8 +174,8 @@ module.exports.table = async (
  * @async
  * @param {string} table - The table name
  * @param {number} numberOfRecords = The number of records to be retrieved, if not passed it will return all records of a table
- * @param {string} offset - The offset string provided by airtable response on the previous get records process // (Optional - Default undefined) //
- * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default undefined) //
+ * @param {string} offset - The offset string provided by airtable response on the previous get records process // (Optional - Default null) //
+ * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default null) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -186,8 +186,8 @@ module.exports.table = async (
 module.exports.nRecords = async (
   tableName,
   numberOfRecords,
-  offset = undefined,
-  formula = undefined,
+  offset = null,
+  formula = null,
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
