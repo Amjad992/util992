@@ -114,28 +114,23 @@ module.exports.hitInHouseEndpoint = async (
       data: JSON.stringify(body),
     });
 
-    const resData = response.data;
-
-    if (!resData.success)
-      throw generalThis.constructResponse(
-        false,
-        resData.code,
-        `Error returned on hitting endpoint ${endpoint}`,
-        resData
-      );
-    else
+    if (response.status >= 200 && response.status < 300)
       return generalThis.constructResponse(
         true,
-        resData.code,
+        response.status,
         `Successfully hit the endpoint /${endpoint}`,
-        resData
+        response.data
       );
+    else {
+      throw response;
+    }
   } catch (err) {
+    const error = err.response ? err.response : err;
     throw generalThis.constructResponse(
       false,
-      err.response.status,
-      err.message,
-      err.response.data
+      error.status,
+      `Error returned on hitting endpoint ${endpoint}`,
+      error.data
     );
   }
 };
@@ -157,20 +152,22 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
       url,
       data: JSON.stringify(body),
     });
-    const resData = response.data;
 
-    return generalThis.constructResponse(
-      true,
-      response.code,
-      `Successfully hit ${url}`,
-      resData
-    );
+    if (response.status >= 200 && response.status < 300)
+      return generalThis.constructResponse(
+        true,
+        response.code,
+        `Successfully hit ${url}`,
+        response.data
+      );
+    else throw response;
   } catch (err) {
+    const error = err.response ? err.response : err;
     throw generalThis.constructResponse(
       false,
-      err.response.status,
-      err.message,
-      err.response.data
+      error.status,
+      `Error returned on hitting url ${url}`,
+      error.data
     );
   }
 };
