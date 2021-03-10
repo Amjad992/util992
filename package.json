@@ -1,6 +1,6 @@
 {
   "name": "util992",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A simple utility library to perform repetitive tasks without much configurations and code.",
   "main": "index.js",
   "repository": {
