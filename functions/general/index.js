@@ -126,10 +126,13 @@ module.exports.hitInHouseEndpoint = async (
     }
   } catch (err) {
     const error = err.response ? err.response : err;
+    const message = `Error returned on hitting endpoint ${endpoint}`;
+    if (err.message) message = `${message}, ${err.message}`;
+
     throw generalThis.constructResponse(
       false,
       error.status,
-      `Error returned on hitting endpoint ${endpoint}`,
+      message,
       error.data
     );
   }
@@ -163,10 +166,13 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
     else throw response;
   } catch (err) {
     const error = err.response ? err.response : err;
+    const message = `Error returned on hitting endpoint ${endpoint}`;
+    if (err.message) message = `${message}, ${err.message}`;
+
     throw generalThis.constructResponse(
       false,
       error.status,
-      `Error returned on hitting url ${url}`,
+      message,
       error.data
     );
   }
