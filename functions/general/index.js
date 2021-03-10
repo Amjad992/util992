@@ -131,7 +131,7 @@ module.exports.hitInHouseEndpoint = async (
         resData
       );
   } catch (err) {
-    throw generalFuncs.constructResponse(
+    throw generalThis.constructResponse(
       false,
       err.response.status,
       err.message,
@@ -166,7 +166,7 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
       resData
     );
   } catch (err) {
-    throw generalFuncs.constructResponse(
+    throw generalThis.constructResponse(
       false,
       err.response.status,
       err.message,
