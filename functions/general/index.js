@@ -131,7 +131,12 @@ module.exports.hitInHouseEndpoint = async (
         resData
       );
   } catch (err) {
-    throw err;
+    throw generalFuncs.constructResponse(
+      false,
+      err.response.status,
+      err.message,
+      err.response.data
+    );
   }
 };
 
