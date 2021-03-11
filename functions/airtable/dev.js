@@ -124,8 +124,16 @@ module.exports.createMax10Records = async (
 ) => {
   try {
     const url = `${baseURL}${baseId}/${tableName}`;
+
+    let formattedRecords = [];
+    recordsArray.forEach((record) => {
+      formattedRecords.push({
+        fields: record,
+      });
+    });
+
     const body = {
-      records: recordsArray,
+      records: formattedRecords,
     };
 
     const response = await axios({
