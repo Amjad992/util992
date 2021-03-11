@@ -45,12 +45,6 @@ module.exports.records = async (
     let statusCode;
     let recordsCreateddArray = [];
 
-    // let toCreateRecordsArray = [];
-    // for (i in recordsArray) {
-    //   toCreateRecordsArray.push({
-    //     fields: recordsArray[i],
-    //   });
-    // }
     await generalFuncs.performActionForSubArrays(
       async (chunk, {tableName, apiKey, baseURL, baseId}) => {
         const singleResponse = await airtableDev.createMax10Records(
