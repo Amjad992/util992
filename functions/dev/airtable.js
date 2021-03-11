@@ -212,6 +212,6 @@ module.exports.getRecords = async (
       {offset: resData.offset}
     );
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
