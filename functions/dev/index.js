@@ -10,15 +10,15 @@ const generalFuncs = require('../general');
  */
 function isValueNotSet(value) {
   if (
-    value === undefined ||
-    value === null ||
-    value === '' ||
-    value.length == 0
+    typeof value !== 'function' &&
+    (value === undefined ||
+      value === null ||
+      value === '' ||
+      value.length === 0)
   )
     return true;
   else return false;
 }
-
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
  * Return an error response with a message to tell the user that the property is not set yet, and they have to set it using specific config function
  * @param  {string} path - The path under which this property is
