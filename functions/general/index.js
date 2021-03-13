@@ -105,7 +105,6 @@ module.exports.hitInHouseEndpoint = async (
   //
   if (endpoint[0] === '/') endpoint = endpoint.substring(1);
   const url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
-
   try {
     dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
     const response = await axios({
@@ -125,16 +124,7 @@ module.exports.hitInHouseEndpoint = async (
       throw response;
     }
   } catch (err) {
-    const error = err.response ? err.response : err;
-    let message = `Error returned on hitting endpoint ${endpoint}`;
-    if (err.message) message = `${message}, ${err.message}`;
-
-    throw generalThis.constructResponse(
-      false,
-      error.status,
-      message,
-      error.data
-    );
+    throw dev.formatError(err);
   }
 };
 
@@ -165,16 +155,7 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
       );
     else throw response;
   } catch (err) {
-    const error = err.response ? err.response : err;
-    let message = `Error returned on hitting endpoint ${endpoint}`;
-    if (err.message) message = `${message}, ${err.message}`;
-
-    throw generalThis.constructResponse(
-      false,
-      error.status,
-      message,
-      error.data
-    );
+    throw dev.formatError(err);
   }
 };
 /** Splits an array into chunks then perform an action on all those chunks, it will perform all the
@@ -233,7 +214,7 @@ module.exports.performActionForSubArrays = async (
 /** Repeat an action repeatedly until either the successCheck function, which this function pass the response to, return true, or the numberOfTries passed is reached in case that was passed any value
  * @param  {function} action - The action/function to be performed until it succeed
  * @param  {function} checkFunction - The function that will receive the action response to decide if success or fail (Should be returning boolean, True if action succeeded, or False if action failed)
- * @param  {integer} numberOfTries - The number of times to try the action before quitting, if number is not passed then it will keep trying the action until it's success, it won't stop without success  // (Optional - Default is null) //
+ * @param  {integer} attempts - The number of attempts to try the action before quitting, if number is not passed then it will keep trying the action until it's success, it won't stop without success  // (Optional - Default is null) //
  * @param  {object} parameters - The parameters object to be passed to the action every time // (Optional - Default is empty object {}) //
  * @param  {integer} sleepPeriodInMilliseconds - The time to wait between each action performance // (Optional - Default is 1000 milliseconds) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
@@ -242,30 +223,30 @@ module.exports.performActionForSubArrays = async (
 module.exports.performActionRepeatedly = async (
   action,
   checkFunction,
-  numberOfTries = null,
+  attempts = null,
   parameters = null,
   sleepPeriodInMilliseconds = 1000
 ) => {
   dev.throwErrorIfValueNotPassed(action, 'action');
   dev.throwErrorIfValueNotPassed(checkFunction, 'checkFunction');
 
-  if (numberOfTries === 0) {
+  if (attempts === 0) {
     return generalFuncs.constructResponse(
       true,
       400,
-      `numberOfTries passed should be more than 0`
+      `attempts passed should be more than 0`
     );
   }
 
-  let triedAlready = 0;
+  let attemptedAlready = 0;
   let response;
   let isActionSuccess = false;
-  while (numberOfTries === null || triedAlready < numberOfTries) {
+  while (attempts === null || attemptedAlready < attempts) {
     try {
       if (parameters) response = await action(parameters);
       else response = await action();
 
-      ++triedAlready;
+      ++attemptedAlready;
 
       if (checkFunction(response)) {
         isActionSuccess = true;
@@ -292,7 +273,7 @@ module.exports.performActionRepeatedly = async (
       200,
       `Successfully performed action`,
       response,
-      {numberOfTries: triedAlready}
+      {attemptesCount: attemptedAlready}
     );
   else
     return generalThis.constructResponse(
@@ -300,7 +281,7 @@ module.exports.performActionRepeatedly = async (
       400,
       'Failed performing an action',
       response,
-      {numberOfTries}
+      {attemptesCount: attempts}
     );
 };
 

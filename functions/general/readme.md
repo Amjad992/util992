@@ -171,7 +171,7 @@
   general.performActionRepeatedly(
     action,
     checkFunction,
-    (numberOfTries = 1),
+    (attempts = 1),
     (parameters = null),
     (sleepPeriodInMilliseconds = 1000)
   );
@@ -206,7 +206,7 @@
       status: 'fail',
       message: 'some error message from the API'
     },
-    numberOfTries: 3
+    attempts: 3
   }
   ```
 
@@ -242,7 +242,7 @@
       status: 'success',
       message: 'some message'
     },
-    numberOfTries: 2
+    attempts: 2
   }
   ```
 

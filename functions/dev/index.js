@@ -94,16 +94,28 @@ module.exports.throwErrorIfValueNotPassed = (value, propertyName) => {
  * Check if the error passed is set according to this module construct response function (that means it's thrown using function like the ones above this one), however, if it's not then that means Axios throw it and we'll have to format it for user before throw it
  * @param  {object} errOrRes - The error or repsonse to check if it comes from Axios error or internal error thrown
  */
-module.exports.formatError = (errorResponse) => {
-  if (errorResponse.response) {
+module.exports.formatError = (error) => {
+  if (error.response) {
+    // It's an error coming from axios
     return generalFuncs.constructResponse(
       false,
-      errorResponse.response.status,
-      errorResponse.message,
-      errorResponse.response.data
+      error.response.status,
+      error.message,
+      error.response.data
     );
+  } else if (error.success === false && error.code) {
+    // It's already formatted using this module construct response function so just return it
+    return error;
   } else {
-    // It's already formatted using this module construct response function
-    return errorResponse;
+    // It's a another error thrown here directly
+    return generalFuncs.constructResponse(
+      false,
+      400,
+      error.message,
+      undefined,
+      {
+        errorName: error.name,
+      }
+    );
   }
 };
