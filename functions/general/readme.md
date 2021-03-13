@@ -137,7 +137,7 @@
 
   ### general.performActionForSubArrays
 
-- Perform an action multiple times
+- Perform an action multiple times (just perform actions and doesn't return anything)
 
   ```javascript
   general.performActionForSubArrays(
@@ -155,12 +155,95 @@
   await util.funcs.g.performActionForSubArrays((chunck, parameters) => {
       console.log(chunck[0])
       console.log(parameters.seperator)
-  }, [1, 2, 3, 4], desiredLength = 1, {seperator: '---'}, 1000);
+  }, [1, 2, 3, 4], 1, {seperator: '---'}, 1000);
   // Prints the following output and each chunk will appear after a second of the previous
   [ 1, 2 ]
   ---
   [ 3, 4 ]
   ---
+  ```
+
+  ### general.performActionRepeatedly
+
+- Perform an action until the checking function used to check the response return true, or the maximum number of tries reached
+
+  ```javascript
+  general.performActionRepeatedly(
+    action,
+    checkFunction,
+    (numberOfTries = 1),
+    (parameters = null),
+    (sleepPeriodInMilliseconds = 1000)
+  );
+  ```
+
+- Example 1
+
+  ```javascript
+  await util.funcs.g.performActionRepeatedly((parameters) => {
+      console.log('Call API');
+      const callResponse = someCalledFunctionOrAPI(parameters.valueNeeded);
+      console.log(parameters.seperator)
+      // e.g. callResponse = {status: 'fail', message: 'some error message from the API'}
+      return callResponse;
+  }, (response) => {
+    if (response.status == 'success') return true;
+    else return false
+  }, 3, {valueNeeded: 'some value', seperator: '---'}, 1000);
+  // Prints the following output and each try will appear after a second of the previous
+  Call API
+  ---
+  Call API
+  ---
+  Call API
+  ---
+  // Will also return the following since the call to API failed in the 3 times
+  {
+    success: false,
+    code: 400,
+    message: 'Failed performing an action',
+    body:{
+      status: 'fail',
+      message: 'some error message from the API'
+    },
+    numberOfTries: 3
+  }
+  ```
+
+- Example 2
+
+  ```javascript
+  await util.funcs.g.performActionRepeatedly((parameters) => {
+      console.log('Call API');
+      const callResponse = someCalledFunctionOrAPI(parameters.valueNeeded);
+      console.log(parameters.seperator)
+      // let's assume that on first attempt response was
+      // call callResponse = {status: 'fail', message: 'some error message from the API'}
+      // while on second attempt it was
+      // e.g. callResponse = {status: 'success', message: 'some message'}
+      return callResponse;
+  }, (response) => {
+    if (response.status == 'success') return true;
+    else return false
+  }, 3, {valueNeeded: 'some value', seperator: '---'}, 1000);
+  // Prints the following output and each try will appear after a second of the previous
+  Call API
+  ---
+  Call API
+  ---
+  Call API
+  ---
+  // Will also return the following since the call to API call successed after 2 attempts
+  {
+    success: false,
+    code: 200,
+    message: 'Successfully performed action',
+    body:{
+      status: 'success',
+      message: 'some message'
+    },
+    numberOfTries: 2
+  }
   ```
 
   ### general.isArray

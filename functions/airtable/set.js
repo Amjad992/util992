@@ -76,29 +76,4 @@ module.exports.records = async (
   } catch (err) {
     throw dev.formatError(err);
   }
-  //   const url = `${baseURL}${baseId}/${tableName}`;
-  //   const body = {
-  //     records: toCreateRecordsArray,
-  //   };
-
-  //   const response = await axios({
-  //     method: 'post',
-  //     url,
-  //     headers: {
-  //       Authorization: `Bearer ${apiKey}`,
-  //     },
-  //     data: body,
-  //   });
-  //   const resData = response.data;
-  //   const records = resData.records;
-
-  //   return generalFuncs.constructResponse(
-  //     true,
-  //     response.code,
-  //     `Successfully set ${records.length} records in airtable`,
-  //     records
-  //   );
-  // } catch (err) {
-  //   throw dev.formatError(err);
-  // }
 };
