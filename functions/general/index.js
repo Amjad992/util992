@@ -93,7 +93,7 @@ module.exports.sleep = async (milliseconds = 1000) => {
  * @async
  * @param  {String} endpoint - The endpoint to be hit (e.g. sample) // (Optional - Default is the empty string '') //
  * @param  {String} method - The method to be used (get, post, put, patch, delete) // (Optional - Default is get) //
- * @param  {Object} body - The body to include // (Optional - Default is empty object {}) //
+ * @param  {Object} body - The body to include, if the method is get, the body will be stringified before sending // (Optional - Default is empty object {}) //
  * @returns - Return a response following this module's format (response will be created using func.constructResponse functionality)
  ** In case of error, it will throw an exception with an object following the same format
  */
@@ -133,7 +133,7 @@ module.exports.hitInHouseEndpoint = async (
  * @async
  * @param  {String} url - The url to hit with the request
  * @param  {String} method - The method to be used (get, post, put, patch, delete)
- * @param  {Object} body - The body to include  // (Optional - Default is empty object {}) //
+ * @param  {Object} body - The body to include, if the method is get, the body will be stringified before sending // (Optional - Default is empty object {}) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */

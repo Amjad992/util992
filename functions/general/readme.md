@@ -88,6 +88,7 @@
 ### general.hitInHouseEndpoint
 
 - Send a request to an endpoint in the current server
+- if the method is get, the body will be stringified before sending
 
   ```javascript
   general.hitInHouseEndpoint((endpoint = ''), (method = 'get'), (body = {}));
@@ -113,6 +114,7 @@
 ### general.hitURL
 
 - Send a request to an external url
+- if the method is get, the body will be stringified before sending
 
   ```javascript
   general.hitURL(url, (method = 'get'), (body = {}));
