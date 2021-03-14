@@ -248,7 +248,7 @@ module.exports.performActionRepeatedly = async (
 
       ++attemptedAlready;
 
-      if (checkFunction(response)) {
+      if (await checkFunction(response)) {
         isActionSuccess = true;
         break;
       } else {
