@@ -255,7 +255,7 @@ module.exports.performActionRepeatedly = async (
         isActionSuccess = false;
       }
     } catch (error) {
-      const errorObj = await generalThis.constructResponse(
+      const errorObj = generalThis.constructResponse(
         false,
         error.code,
         `An error happened while performing an action`,
@@ -268,7 +268,7 @@ module.exports.performActionRepeatedly = async (
   }
 
   if (isActionSuccess)
-    return await generalThis.constructResponse(
+    return generalThis.constructResponse(
       true,
       200,
       `Successfully performed action`,
@@ -276,7 +276,7 @@ module.exports.performActionRepeatedly = async (
       {attemptesCount: attemptedAlready}
     );
   else
-    return await generalThis.constructResponse(
+    return generalThis.constructResponse(
       false,
       400,
       'Failed performing an action',
