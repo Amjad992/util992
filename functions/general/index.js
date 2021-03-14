@@ -107,10 +107,11 @@ module.exports.hitInHouseEndpoint = async (
   const url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
   try {
     dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
+    const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
     const response = await axios({
       method: method.toLowerCase(method),
       url,
-      data: JSON.stringify(body),
+      data: bodyToPass,
     });
 
     if (response.status >= 200 && response.status < 300)
@@ -139,11 +140,11 @@ module.exports.hitInHouseEndpoint = async (
 module.exports.hitURL = async (url, method = 'get', body = {}) => {
   try {
     dev.throwErrorIfValueNotPassed(url, 'url');
-
+    const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
     const response = await axios({
       method: method.toLowerCase(method),
       url,
-      data: JSON.stringify(body),
+      data: bodyToPass,
     });
 
     if (response.status >= 200 && response.status < 300)
