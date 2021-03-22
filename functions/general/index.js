@@ -231,59 +231,50 @@ module.exports.performActionRepeatedly = async (
   dev.throwErrorIfValueNotPassed(action, 'action');
   dev.throwErrorIfValueNotPassed(checkFunction, 'checkFunction');
 
-  if (attempts === 0) {
-    return generalFuncs.constructResponse(
-      true,
-      400,
-      `attempts passed should be more than 0`
+  try {
+    return await repeatAction(
+      action,
+      checkFunction,
+      attempts,
+      parameters,
+      sleepPeriodInMilliseconds,
+      undefined
     );
+  } catch (err) {
+    console.log(err);
+    throw dev.formatError(err);
   }
+};
 
-  let attemptedAlready = 0;
-  let response;
-  let isActionSuccess = false;
-  while (attempts === null || attemptedAlready < attempts) {
-    try {
-      if (parameters) response = await action(parameters);
-      else response = await action();
+repeatAction = async (
+  action,
+  checkFunction,
+  attempts = null,
+  parameters = null,
+  sleepPeriodInMilliseconds = 1000,
+  lastResponse = null
+) => {
+  if (attempts === 0) return lastResponse;
 
-      ++attemptedAlready;
+  let actionResponse;
+  if (parameters) actionResponse = await action(parameters);
+  else actionResponse = await action();
+  // console.log(actionResponse);
 
-      if (await checkFunction(response)) {
-        isActionSuccess = true;
-        break;
-      } else {
-        isActionSuccess = false;
-      }
-    } catch (error) {
-      const errorObj = generalThis.constructResponse(
-        false,
-        error.code,
-        `An error happened while performing an action`,
-        error,
-        {extraMessage: error.message}
+  if (await checkFunction(actionResponse)) return actionResponse;
+  else {
+    setTimeout(async () => {
+      actionResponse = await repeatAction(
+        action,
+        checkFunction,
+        attempts - 1,
+        parameters,
+        sleepPeriodInMilliseconds,
+        actionResponse
       );
-      throw errorObj;
-    }
-    await this.sleep(sleepPeriodInMilliseconds);
+      return actionResponse;
+    }, sleepPeriodInMilliseconds);
   }
-
-  if (isActionSuccess)
-    return generalThis.constructResponse(
-      true,
-      200,
-      `Successfully performed action`,
-      response,
-      {attemptesCount: attemptedAlready}
-    );
-  else
-    return generalThis.constructResponse(
-      false,
-      400,
-      'Failed performing an action',
-      response,
-      {attemptesCount: attempts}
-    );
 };
 
 /** Check if the object passed is an array or not
