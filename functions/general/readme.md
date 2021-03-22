@@ -167,7 +167,8 @@
 
   ### general.performActionRepeatedly
 
-- Perform an action until the checking function used to check the response return true, or the maximum number of tries reached
+- Perform an action without blocking until the checking function used to check the response return true, or the maximum number of tries reached.
+- This doesn't return any thing. (temporarily just to fix the blocking issue, and will be improved in future to return whatever response is back)
 
   ```javascript
   general.performActionRepeatedly(

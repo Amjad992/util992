@@ -218,7 +218,7 @@ module.exports.performActionForSubArrays = async (
  * @param  {integer} attempts - The number of attempts to try the action before quitting, if number is not passed then it will keep trying the action until it's success, it won't stop without success  // (Optional - Default is null) //
  * @param  {object} parameters - The parameters object to be passed to the action every time // (Optional - Default is empty object {}) //
  * @param  {integer} sleepPeriodInMilliseconds - The time to wait between each action performance // (Optional - Default is 1000 milliseconds) //
- * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ * @returns Return undefined if action started performing, or throws an error if no value passed
  ** In case of error, it will throw an exception with an object following the same format
  */
 module.exports.performActionRepeatedly = async (
