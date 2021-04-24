@@ -104,7 +104,7 @@ module.exports.hitInHouseEndpoint = async (
 ) => {
   //
   if (endpoint[0] === '/') endpoint = endpoint.substring(1);
-  const url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
+  const url = `${v.g.hitInHouseEndpointBaseURL()}/${endpoint}`;
   try {
     dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
     const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
@@ -241,7 +241,6 @@ module.exports.performActionRepeatedly = async (
       undefined
     );
   } catch (err) {
-    console.log(err);
     throw dev.formatError(err);
   }
 };
@@ -259,7 +258,6 @@ repeatAction = async (
   let actionResponse;
   if (parameters) actionResponse = await action(parameters);
   else actionResponse = await action();
-  // console.log(actionResponse);
 
   if (await checkFunction(actionResponse)) return actionResponse;
   else {
