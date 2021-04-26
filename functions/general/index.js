@@ -104,7 +104,7 @@ module.exports.hitInHouseEndpoint = async (
 ) => {
   //
   if (endpoint[0] === '/') endpoint = endpoint.substring(1);
-  const url = `${v.g.hitInHouseEndpointBaseURL()}/${endpoint}`;
+  const url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
   try {
     dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
     const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
