@@ -156,8 +156,8 @@
   ```javascript
   await util.funcs.g.performActionForSubArrays((chunck, parameters) => {
       console.log(chunck[0])
-      console.log(parameters.seperator)
-  }, [1, 2, 3, 4], 1, {seperator: '---'}, 1000);
+      console.log(parameters.separator)
+  }, [1, 2, 3, 4], 1, {separator: '---'}, 1000);
   // Prints the following output and each chunk will appear after a second of the previous
   [ 1, 2 ]
   ---
@@ -168,7 +168,8 @@
   ### general.performActionRepeatedly
 
 - Perform an action without blocking until the checking function used to check the response return true, or the maximum number of tries reached.
-- This doesn't return any thing. (temporarily just to fix the blocking issue, and will be improved in future to return whatever response is back)
+- This will return whatever the response is in case of success (decided by checking function), or will return the final failure response in case of failure
+- This is a promise and can use with either await or .then()
 
   ```javascript
   general.performActionRepeatedly(
@@ -186,13 +187,13 @@
   await util.funcs.g.performActionRepeatedly((parameters) => {
       console.log('Call API');
       const callResponse = someCalledFunctionOrAPI(parameters.valueNeeded);
-      console.log(parameters.seperator)
+      console.log(parameters.separator)
       // e.g. callResponse = {status: 'fail', message: 'some error message from the API'}
       return callResponse;
   }, (response) => {
     if (response.status == 'success') return true;
     else return false
-  }, 3, {valueNeeded: 'some value', seperator: '---'}, 1000);
+  }, 3, {valueNeeded: 'some value', separator: '---'}, 1000);
   // Prints the following output and each try will appear after a second of the previous
   Call API
   ---
@@ -219,7 +220,7 @@
   await util.funcs.g.performActionRepeatedly((parameters) => {
       console.log('Call API');
       const callResponse = someCalledFunctionOrAPI(parameters.valueNeeded);
-      console.log(parameters.seperator)
+      console.log(parameters.separator)
       // let's assume that on first attempt response was
       // call callResponse = {status: 'fail', message: 'some error message from the API'}
       // while on second attempt it was
@@ -228,7 +229,7 @@
   }, (response) => {
     if (response.status == 'success') return true;
     else return false
-  }, 3, {valueNeeded: 'some value', seperator: '---'}, 1000);
+  }, 3, {valueNeeded: 'some value', separator: '---'}, 1000);
   // Prints the following output and each try will appear after a second of the previous
   Call API
   ---

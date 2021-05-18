@@ -253,26 +253,26 @@ repeatAction = async (
   sleepPeriodInMilliseconds = 1000,
   lastResponse = null
 ) => {
-  if (attempts === 0) return lastResponse;
-
-  let actionResponse;
-  if (parameters) actionResponse = await action(parameters);
-  else actionResponse = await action();
-
-  if (await checkFunction(actionResponse)) return actionResponse;
-  else {
-    setTimeout(async () => {
-      actionResponse = await repeatAction(
-        action,
-        checkFunction,
-        attempts - 1,
-        parameters,
-        sleepPeriodInMilliseconds,
-        actionResponse
-      );
-      return actionResponse;
-    }, sleepPeriodInMilliseconds);
-  }
+  return new Promise(async (resolve, reject) => {
+    if (attempts === 0) resolve(lastResponse);
+    let actionResponse;
+    if (parameters) actionResponse = await action(parameters);
+    else actionResponse = await action();
+    if (await checkFunction(actionResponse)) resolve(actionResponse);
+    else {
+      setTimeout(async () => {
+        actionResponse = await repeatAction(
+          action,
+          checkFunction,
+          attempts - 1,
+          parameters,
+          sleepPeriodInMilliseconds,
+          actionResponse
+        );
+        resolve(actionResponse);
+      }, sleepPeriodInMilliseconds);
+    }
+  });
 };
 
 /** Check if the object passed is an array or not
