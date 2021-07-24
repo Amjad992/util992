@@ -12,6 +12,7 @@ const airtableDev = require('../dev/airtable');
  * @param {number} numberOfRecords = The number of records to be retrieved, if not passed it will return all records of a table
  * @param {string} offset - The offset string provided by airtable response on the previous get records process // (Optional - Default null) //
  * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default null) //
+ * @param {string} fieldsToIncludeArr - The fields of array to include // (Optional - Default [])
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -24,6 +25,7 @@ module.exports.records = async (
   numberOfRecords,
   offset = null,
   formula = null,
+  fieldsToIncludeArr = [],
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
@@ -50,6 +52,7 @@ module.exports.records = async (
       numberOfRecords,
       offset,
       formula,
+      fieldsToIncludeArr,
       apiKey,
       baseURL,
       baseId
@@ -74,6 +77,7 @@ module.exports.records = async (
         numberOfRecords,
         offset,
         formula,
+        fieldsToIncludeArr,
         apiKey,
         baseURL,
         baseId
@@ -104,6 +108,7 @@ module.exports.records = async (
  * @async
  * @param {string} tableName - The table name
  * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default null) //
+ * @param {string} fieldsToIncludeArr - The fields of array to include // (Optional - Default [])
  * @param {string} apiKey - The api key // (Optional - configurable through the config.airtable object) //
  * @param {string} baseURL - The base url // (Optional - Default is 'https://api.airtable.com/v0/' - configurable through the config.airtable object) //
  * @param {string} baseId - The base id // (Optional - configurable through the config.airtable object) //
@@ -114,6 +119,7 @@ module.exports.records = async (
 module.exports.table = async (
   tableName,
   formula = null,
+  fieldsToIncludeArr = [],
   apiKey = v.airtable.apiKey,
   baseURL = v.airtable.baseURL,
   baseId = v.airtable.baseId
@@ -127,9 +133,10 @@ module.exports.table = async (
   try {
     const recordsRes = await this.records(
       tableName,
-      null,
-      null,
+      undefined,
+      undefined,
       formula,
+      fieldsToIncludeArr,
       apiKey,
       baseURL,
       baseId
@@ -182,6 +189,7 @@ module.exports.base = async (
       const tableRes = await this.table(
         tableName,
         null,
+        undefined,
         apiKey,
         baseURL,
         baseId
@@ -242,7 +250,7 @@ module.exports.baseRecoresIds = async (
 
     return generalFuncs.constructResponse(
       true,
-      null,
+      undefined,
       `Retrieved ${tablesArray} tables records ids from airtable`,
       idsObj
     );

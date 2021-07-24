@@ -166,6 +166,7 @@ module.exports.createMax10Records = async (
  * @param {number} numberOfRecords = The number of records to be retrieved, if not passed it will return all records of a table
  * @param {string} offset - The offset string provided by airtable response on the previous get records process // (Optional - Default null) //
  * @param {string} formula - The formula used to filter the records (This follows airtable format) // (Optional - Default null) //
+ * @param {string} fieldsToIncludeArr - The fields of array to include // (Optional - Default [])
  * @param {string} apiKey - The api key
  * @param {string} baseURL - The base url
  * @param {string} baseId - The base id
@@ -178,19 +179,24 @@ module.exports.getRecords = async (
   numberOfRecords,
   offset,
   formula,
+  fieldsToIncludeArr,
   apiKey,
   baseURL,
   baseId
 ) => {
   try {
     let url = `${baseURL}${baseId}/${tableName}?`;
-
     if (numberOfRecords) url += `&maxRecords=${numberOfRecords}`;
 
     if (formula) url += `&filterByFormula=${formula}`;
 
     if (offset) {
       url += `&offset=${offset}`;
+    }
+    if (fieldsToIncludeArr.length > 0) {
+      fieldsToIncludeArr.forEach((f) => {
+        url += `&fields[]=${f}`;
+      });
     }
 
     const response = await axios({
