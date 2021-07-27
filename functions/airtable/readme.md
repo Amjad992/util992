@@ -20,11 +20,11 @@ config.airtable.apiKey(['Table 1', 'Table 2']); // Default value is []
 - Return a specific number of records
 - Return all records if numberOfRecords is not passed
   ```javascript
-  get.records{tableName, numberOfRecords, offset = undefined, formula = undefined, apiKey, baseURL, baseId}
+  get.records{tableName, numberOfRecords, offset = undefined, formula = undefined, fieldsToIncludeArr=[], sortFieldsArr=[] apiKey, baseURL, baseId}
   ```
 - Example
   ```javascript
-  await get.records{'Leads', 2, undefined, undefined, undefined, undefined, undefined}
+  await get.records{'Leads', 2, undefined, undefined, undefined, undefined, undefined, undefined}
   // returns
   {
     success: true,
@@ -55,12 +55,12 @@ config.airtable.apiKey(['Table 1', 'Table 2']); // Default value is []
 
 - Return all the records in a table
   ```javascript
-  get.table{tableName, formula = undefined, apiKey, baseURL, baseId}
+  get.table{tableName, formula = undefined, fieldsToIncludeArr=[], sortFieldsArr=[], apiKey, baseURL, baseId}
   ```
 - Example
 
   ```javascript
-  await get.table{'Leads', undefined, undefined, undefined, undefined}
+  await get.table{'Leads', undefined, undefined, undefined, undefined, undefined}
   // returns
     {
         success: true,
