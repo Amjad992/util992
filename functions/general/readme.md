@@ -265,7 +265,7 @@
   // returns true
   ```
 
-  ### general.isArray
+  ### general.isEmptyArray
 
 - Check if the object is an empty array or not
 
@@ -293,4 +293,40 @@
   ```javascript
   await general.isArray('');
   // returns true
+  ```
+
+  ### general.isEmptyObject
+
+- Check if the object is an empty object or not
+
+  ```javascript
+  general.isEmptyObject(object);
+  ```
+
+- Example
+
+  ```javascript
+  await general.isEmptyObject({});
+  // returns true
+  ```
+
+///
+
+### general.generateString
+
+- Generate a string with variable parts inside it
+
+  ```javascript
+  general.generateString(string, variables, values);
+  ```
+
+- Example
+
+  ```javascript
+  await general.generateString(
+    'My Name is {firstName} {lastName}',
+    ['firstName', 'lastName'],
+    ['John', 'Doe']
+  );
+  // returns the string: 'My Name is John Doe'
   ```

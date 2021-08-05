@@ -298,3 +298,25 @@ module.exports.isEmptyArray = async (object) => {
 module.exports.isEmptyString = async (object) => {
   return object === '';
 };
+
+/** Check if the object passed is an empty string
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is an empty object
+ */
+module.exports.isEmptyObject = async (object) => {
+  if (Object.keys(obj).length === 0) return true;
+  else return false;
+};
+
+/** Generate a string with variable parts inside it
+ * @param  {string} string - The base string to be returned after replacing the variables in it (e.g. 'My Name is {firstName} {lastName}' )
+ * @param  {string[]} variables - An array of the variables names (e.g. ['firstName', 'lastName'])
+ * @param  {string[]} values - An array of the values to replace (e.g. ['John', 'Doe'])
+ * @returns - Return the base string after replacing all the values in their supposed place
+ */
+export const generateString = (string, variables, values) => {
+  variables.forEach((item, index) => {
+    string = string.replace(`{${item}}`, values[index]);
+  });
+  return string;
+};
