@@ -303,8 +303,8 @@ module.exports.isEmptyString = async (object) => {
  * @param  {object} object - The object to be checked
  * @returns - Return a true if the object is an empty object
  */
-module.exports.isEmptyObject = async (object) => {
-  if (Object.keys(obj).length === 0) return true;
+module.exports.isEmptyObject = (object) => {
+  if (Object.keys(object).length === 0) return true;
   else return false;
 };
 
@@ -314,7 +314,7 @@ module.exports.isEmptyObject = async (object) => {
  * @param  {string[]} values - An array of the values to replace (e.g. ['John', 'Doe'])
  * @returns - Return the base string after replacing all the values in their supposed place
  */
-export const generateString = (string, variables, values) => {
+module.exports.generateString = (string, variables, values) => {
   variables.forEach((item, index) => {
     string = string.replace(`{${item}}`, values[index]);
   });
