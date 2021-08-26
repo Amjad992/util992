@@ -255,22 +255,24 @@ repeatAction = async (
 ) => {
   return new Promise(async (resolve, reject) => {
     if (attempts === 0) resolve(lastResponse);
-    let actionResponse;
-    if (parameters) actionResponse = await action(parameters);
-    else actionResponse = await action();
-    if (await checkFunction(actionResponse)) resolve(actionResponse);
     else {
-      setTimeout(async () => {
-        actionResponse = await repeatAction(
-          action,
-          checkFunction,
-          attempts - 1,
-          parameters,
-          sleepPeriodInMilliseconds,
-          actionResponse
-        );
-        resolve(actionResponse);
-      }, sleepPeriodInMilliseconds);
+      let actionResponse;
+      if (parameters) actionResponse = await action(parameters);
+      else actionResponse = await action();
+      if (await checkFunction(actionResponse)) resolve(actionResponse);
+      else {
+        setTimeout(async () => {
+          actionResponse = await repeatAction(
+            action,
+            checkFunction,
+            attempts - 1,
+            parameters,
+            sleepPeriodInMilliseconds,
+            actionResponse
+          );
+          resolve(actionResponse);
+        }, sleepPeriodInMilliseconds);
+      }
     }
   });
 };
