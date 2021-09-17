@@ -7,7 +7,8 @@
 You can pass the required values on each function call, or configure it globally using the following
 
 ```javascript
-config.airtable.apiKey('123'); // Default value is null
+config.jotform.apiKey('123'); // Default value is null
+config.jotform.isHipaa(true); // Default value is false
 ```
 
 ## **_Getting Submission_**
@@ -16,11 +17,11 @@ config.airtable.apiKey('123'); // Default value is null
 
 - Return a specific submission from Jotform form
   ```javascript
-  get.submission{submissionId, apiKey}
+  get.submission{submissionId, apiKey, isHipaa}
   ```
 - Example
   ```javascript
-  await get.submission{'123456789', undefined}
+  await get.submission{'123456789', undefined, true}
   // returns
   {
     success: true,
