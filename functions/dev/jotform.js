@@ -91,7 +91,9 @@ module.exports.prepareFieldsQueryParameters = (fieldsObj) => {
       if (generalFuncs.isObject(value)) {
         for (let subId in value) {
           let subValue = value[subId];
-          queryParameters += `submission[${id}][${subId}]=${subValue}&`;
+          if (subId.includes('_'))
+            queryParameters += `submission[${id}][${subId}]=${subValue}&`;
+          else queryParameters += `submission[${id}_${subId}]=${subValue}&`;
         }
       } else {
         queryParameters += `submission[${id}]=${value}&`;

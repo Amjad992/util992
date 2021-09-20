@@ -142,6 +142,7 @@ config.jotform.isHipaa(true); // Default value is false
   set.submission{submissionFieldsObj, formId, apiKey, isHipaa}
   ```
 - Example
+
   ```javascript
   await set.submission{{
     6: 'contact@amjadmajed.com',
@@ -149,7 +150,7 @@ config.jotform.isHipaa(true); // Default value is false
       addr_line1: '7th avenue',
       city: 'New York'
     }
-  }, undefined, undefined, true}
+  }, '987', undefined, true}
   // returns
   {
     success: true,
@@ -157,6 +158,34 @@ config.jotform.isHipaa(true); // Default value is false
     message: 'Added submission successfully to form 987',
     body: {
         submissionId: '12345'
+    }
+  }
+  ```
+
+  ## **_Updating Submissions_**
+
+### update.submission
+
+- update an existing submission
+  ```javascript
+  update.submission{submissionFieldsObj, submissionId, apiKey, isHipaa}
+  ```
+- Example
+  ```javascript
+  await update.submission{{
+    6: 'contact@amjadmajed.com',
+    7: {
+      addr_line1: '8th avenue',
+      state: 'New York'
+    }
+  }, '123', undefined, true}
+  // returns
+  {
+    success: true,
+    code: 200,
+    message: 'Added submission successfully to form 987',
+    body: {
+        submissionId: '123'
     }
   }
   ```
