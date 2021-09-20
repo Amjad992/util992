@@ -338,8 +338,7 @@ module.exports.isEmptyArray = (object) => {
  * @returns - Return a true if the object is an empty object
  */
 module.exports.isEmptyObject = (object) => {
-  if (Object.keys(object).length === 0) return true;
-  else return false;
+  return object.constructor === Object && object.length === 0;
 };
 
 /** Check if the object passed is an empty string
