@@ -27,7 +27,7 @@ function isValueNotSet(value) {
  * @param  {boolean} offerPassing - Flag used to decide either to tell user that they have the option to pass value instead of configuring it (Optional, default is false)
  * @returns - Return a response following this module's format (response will be created using func.constructResponse functionality)
  */
-function errorPropetryNotSetNorPassed(path, propertyName, offerPassing) {
+function errorPropertyNotSetNorPassed(path, propertyName, offerPassing) {
   let message = '';
   if (offerPassing)
     message = `${propertyName} property is not set yet nor passed, you either pass it or alternatively please use the config.${path}.${propertyName} function to do that first.`;
@@ -46,7 +46,7 @@ function errorPropetryNotSetNorPassed(path, propertyName, offerPassing) {
 module.exports.throwErrorIfValueNotSet = (path, propertyName) => {
   const value = eval(`v.${path}.${propertyName}`);
   if (isValueNotSet(value))
-    throw errorPropetryNotSetNorPassed(path, propertyName);
+    throw errorPropertyNotSetNorPassed(path, propertyName);
   else return;
 };
 
@@ -63,7 +63,7 @@ module.exports.throwErrorIfValueNotPassedAndNotSet = (
 ) => {
   const value = eval(`v.${path}.${propertyName}`);
   if (isValueNotSet(passedValue) && isValueNotSet(value))
-    throw errorPropetryNotSetNorPassed(path, propertyName, true);
+    throw errorPropertyNotSetNorPassed(path, propertyName, true);
   else return;
 };
 
