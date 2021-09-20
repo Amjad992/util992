@@ -10,11 +10,12 @@ const generalFuncs = require('../general');
  */
 function isValueNotSet(value) {
   if (
-    typeof value !== 'function' &&
+    !generalFuncs.isFunction(value) &&
     (value === undefined ||
       value === null ||
-      value === '' ||
-      value.length === 0)
+      generalFuncs.isEmptyString(value) ||
+      generalFuncs.isEmptyArray(value) ||
+      generalFuncs.isEmptyObject(value))
   )
     return true;
   else return false;
