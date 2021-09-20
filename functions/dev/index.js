@@ -62,6 +62,7 @@ module.exports.throwErrorIfValueNotPassedAndNotSet = (
   propertyName
 ) => {
   const value = eval(`v.${path}.${propertyName}`);
+
   if (isValueNotSet(passedValue) && isValueNotSet(value))
     throw errorPropertyNotSetNorPassed(path, propertyName, true);
   else return;
