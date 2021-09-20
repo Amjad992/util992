@@ -16,4 +16,14 @@ function setValue(key, value) {
  */
 module.exports.apiKey = (apiKey) => setValue('apiKey', apiKey);
 
+// -------------------------- apiKey // --------------------------
+/** Set the key to be used on the formId for jotform
+ * @param  {string} formId - The form id
+ */
+module.exports.formId = (formId) => setValue('formId', formId);
+
+// -------------------------- apiKey // --------------------------
+/** Set the key to be used on the isHipaa for jotform
+ * @param  {string} isHipaa - The hipaa form flag
+ */
 module.exports.isHipaa = (isHipaa) => setValue('isHipaa', isHipaa);
