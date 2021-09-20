@@ -265,6 +265,81 @@
   // returns true
   ```
 
+  ### general.isObject
+
+- Check if the object is an object or not
+
+  ```javascript
+  general.isObject(object);
+  ```
+
+- Example
+
+  ```javascript
+  await general.isObject({});
+  // returns true
+  ```
+
+  ### general.isFunction
+
+- Check if the object is a function or not
+
+  ```javascript
+  general.isFunction(object);
+  ```
+
+- Example
+
+  ```javascript
+  await general.isFunction(()=>{return true}));
+  // returns true
+  ```
+
+  ### general.isNumber
+
+- Check if the object is a number or not
+
+  ```javascript
+  general.isNumber(object);
+  ```
+
+- Example
+
+  ```javascript
+  await general.isNumber(1);
+  // returns true
+  ```
+
+  ### general.isString
+
+- Check if the object is a string or not
+
+  ```javascript
+  general.isString(object);
+  ```
+
+- Example
+
+  ```javascript
+  await general.isString('Hello');
+  // returns true
+  ```
+
+  ### general.isBoolean
+
+- Check if the object is a boolean or not
+
+  ```javascript
+  general.isBoolean(object);
+  ```
+
+- Example
+
+  ```javascript
+  await general.isBoolean(true);
+  // returns true
+  ```
+
   ### general.isEmptyArray
 
 - Check if the object is an empty array or not

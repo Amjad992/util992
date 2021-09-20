@@ -281,24 +281,56 @@ repeatAction = async (
  * @param  {object} object - The object to be checked
  * @returns - Return a true if the object is array
  */
-module.exports.isArray = async (object) => {
+module.exports.isArray = (object) => {
   return object.constructor === Array;
+};
+
+/** Check if the object passed is an object or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is an object
+ */
+module.exports.isObject = (object) => {
+  return object.constructor === Object;
+};
+
+/** Check if the object passed is a function or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is a function
+ */
+module.exports.isFunction = (object) => {
+  return object.constructor === Function;
+};
+
+/** Check if the object passed is a number or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is a number
+ */
+module.exports.isNumber = (object) => {
+  return object.constructor === Number;
+};
+
+/** Check if the object passed is a string or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is a string
+ */
+module.exports.isString = (object) => {
+  return object.constructor === String;
+};
+
+/** Check if the object passed is a boolean or not
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is a boolean
+ */
+module.exports.isBoolean = (object) => {
+  return object.constructor === Boolean;
 };
 
 /** Check if the object passed is an empty array or not
  * @param  {object} object - The object to be checked
  * @returns - Return a true if the object is an empty array
  */
-module.exports.isEmptyArray = async (object) => {
+module.exports.isEmptyArray = (object) => {
   return object.constructor === Array && object.length === 0;
-};
-
-/** Check if the object passed is an empty string
- * @param  {object} object - The object to be checked
- * @returns - Return a true if the object is an empty string
- */
-module.exports.isEmptyString = async (object) => {
-  return object === '';
 };
 
 /** Check if the object passed is an empty string
@@ -308,6 +340,14 @@ module.exports.isEmptyString = async (object) => {
 module.exports.isEmptyObject = (object) => {
   if (Object.keys(object).length === 0) return true;
   else return false;
+};
+
+/** Check if the object passed is an empty string
+ * @param  {object} object - The object to be checked
+ * @returns - Return a true if the object is an empty string
+ */
+module.exports.isEmptyString = (object) => {
+  return object === '';
 };
 
 /** Generate a string with variable parts inside it
