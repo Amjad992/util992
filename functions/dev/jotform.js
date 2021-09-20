@@ -73,3 +73,38 @@ module.exports.filterSubmissionsByAnswer = async (
     throw generalDev.formatError(err);
   }
 };
+
+/** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
+/** Prepare query parameters for the submission to be attached to a post url 
+ * @async
+ * @param {object} fieldsObj - an object of all the fields to include in the submission
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** The body will the query parameters string created
+ ** In case of error (error of execution), it will throw an exception with an object following the same format.
+ */
+module.exports.prepareFieldsQueryParameters = (fieldsObj) => {
+  try {
+    let queryParameters = '';
+    for (let id in fieldsObj) {
+      let value = fieldsObj[id];
+
+      if (generalFuncs.isObject(value)) {
+        for (let subId in value) {
+          let subValue = value[subId];
+          queryParameters += `submission[${id}][${subId}]=${subValue}&`;
+        }
+      } else {
+        queryParameters += `submission[${id}]=${value}&`;
+      }
+    }
+
+    return generalFuncs.constructResponse(
+      true,
+      200,
+      `generated query parameters successfully`,
+      queryParameters
+    );
+  } catch (err) {
+    throw generalDev.formatError(err);
+  }
+};

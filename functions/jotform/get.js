@@ -10,7 +10,7 @@ const jotformDev = require('../dev/jotform');
  * @async
  * @param {string} submissionId - the submission Id to be retrieved
  * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
- * @param {string} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
@@ -58,7 +58,7 @@ module.exports.submission = async (
  * @param {string} subFieldId - the sub id of the field needed, (Optional - this is used in a field that contain other fields like address field for example (e.g. add_line1))
  * @param {string} formId - The form id// (Optional - configurable through the config.jotform object) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
- * @param {string} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */

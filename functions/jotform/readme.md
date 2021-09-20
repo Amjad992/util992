@@ -132,3 +132,31 @@ config.jotform.isHipaa(true); // Default value is false
     }
   }
   ```
+
+## **_Setting Submissions_**
+
+### set.submission
+
+- Create a new submission
+  ```javascript
+  set.submission{submissionFieldsObj, formId, apiKey, isHipaa}
+  ```
+- Example
+  ```javascript
+  await set.submission{{
+    6: 'contact@amjadmajed.com',
+    7: {
+      addr_line1: '7th avenue',
+      city: 'New York'
+    }
+  }, undefined, undefined, true}
+  // returns
+  {
+    success: true,
+    code: 200,
+    message: 'Added submission successfully to form 987',
+    body: {
+        submissionId: '12345'
+    }
+  }
+  ```
