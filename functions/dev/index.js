@@ -72,7 +72,7 @@ module.exports.throwErrorIfValueNotPassedAndNotSet = (
  * @param  {string} propertyName - The property name that is not passed
  * @returns - Return a response following this module's format (response will be created using func.constructResponse functionality)
  */
-function errorPropetryNotPassed(propertyName) {
+function errorPropertyNotPassed(propertyName) {
   return generalFuncs.constructResponse(
     false,
     400,
@@ -87,7 +87,7 @@ function errorPropetryNotPassed(propertyName) {
  * @returns - Throws an error if not set, or return undefined if set
  */
 module.exports.throwErrorIfValueNotPassed = (value, propertyName) => {
-  if (isValueNotSet(value)) throw errorPropetryNotPassed(propertyName);
+  if (isValueNotSet(value)) throw errorPropertyNotPassed(propertyName);
   else return;
 };
 
