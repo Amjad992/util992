@@ -1,5 +1,9 @@
+const axios = require('axios');
+
 const generalFuncs = require('../general');
 const generalDev = require('../dev');
+
+const v = require(`../../values`);
 
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
 /** Filter submissions with specific flag value
@@ -108,5 +112,61 @@ module.exports.prepareFieldsQueryParameters = (fieldsObj) => {
     );
   } catch (err) {
     throw generalDev.formatError(err);
+  }
+};
+
+/** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
+ * @param {number} numberOfSubmissions - an object of all the fields to include in the submission
+ * @param {number} numberOfSubmissions - an object of all the fields to include in the submission
+ * @param {string} formId - The form id// (Optional - configurable through the config.jotform object) //
+ * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** The body will the query parameters string created
+ ** In case of error (error of execution), it will throw an exception with an object following the same format.
+ */
+
+module.exports.getSubmissions = async (
+  numberOfSubmissions,
+  offset,
+  formId,
+  apiKey,
+  isHipaa
+) => {
+  try {
+    const baseURL = isHipaa ? 'hipaa-api' : 'api';
+    let url = `https://${baseURL}.jotform.com/form/${formId}/submissions?apiKey=${apiKey}`;
+
+    if (numberOfSubmissions) url += `&limit=${numberOfSubmissions}`;
+
+    if (offset) {
+      url += `&offset=${offset}`;
+    }
+
+    const response = await axios({
+      method: 'get',
+      url,
+      headers: {
+        APIKEY: apiKey,
+      },
+    });
+
+    const resData = response.data;
+    const offsetObj = resData.resultSet;
+    newOffset =
+      offsetObj.limit === offsetObj.count
+        ? offsetObj.offset + offsetObj.count
+        : null;
+
+    const submissions = resData.content;
+    return generalFuncs.constructResponse(
+      true,
+      response.code,
+      `Retrieved ${submissions.length} records from form with id ${formId}`,
+      submissions,
+      {offset: newOffset}
+    );
+  } catch (err) {
+    throw err;
   }
 };
