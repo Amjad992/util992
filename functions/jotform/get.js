@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const v = require(`../../values`);
-const dev = require('../dev');
+const generalDev = require('../dev');
 
 const generalFuncs = require('../general');
 const jotformDev = require('../dev/jotform');
@@ -19,10 +19,10 @@ module.exports.submission = async (
   apiKey = v.jotform.apiKey,
   isHipaa = v.jotform.isHipaa
 ) => {
-  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
-  dev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
 
-  dev.throwErrorIfValueNotPassed(submissionId, 'submissionId');
+  generalDev.throwErrorIfValueNotPassed(submissionId, 'submissionId');
 
   try {
     const baseURL = isHipaa ? 'hipaa-api' : 'api';
@@ -48,7 +48,7 @@ module.exports.submission = async (
       );
     else throw resData;
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
 
@@ -70,9 +70,9 @@ module.exports.submissions = async (
   apiKey = v.jotform.apiKey,
   isHipaa = v.jotform.isHipaa
 ) => {
-  dev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
-  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
-  dev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
 
   if (numberOfSubmissions === 0) {
     return generalFuncs.constructResponse(
@@ -144,7 +144,7 @@ module.exports.submissions = async (
       );
     else throw singleResponse;
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
 
@@ -168,12 +168,12 @@ module.exports.submissionsByFieldValue = async (
   apiKey = v.jotform.apiKey,
   isHipaa = v.jotform.isHipaa
 ) => {
-  dev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
-  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
-  dev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
 
-  dev.throwErrorIfValueNotPassed(fieldValue, 'fieldValue');
-  dev.throwErrorIfValueNotPassed(fieldId, 'fieldId');
+  generalDev.throwErrorIfValueNotPassed(fieldValue, 'fieldValue');
+  generalDev.throwErrorIfValueNotPassed(fieldId, 'fieldId');
 
   try {
     const allSubmissions = await this.submissions(
@@ -210,6 +210,6 @@ module.exports.submissionsByFieldValue = async (
       );
     else throw err;
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };

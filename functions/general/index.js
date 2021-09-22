@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const v = require(`../../values`);
-const dev = require('../dev');
+const generalDev = require('../dev');
 
 const generalThis = this;
 
@@ -106,7 +106,7 @@ module.exports.hitInHouseEndpoint = async (
   if (endpoint[0] === '/') endpoint = endpoint.substring(1);
   let url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
   try {
-    dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
+    generalDev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
     const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
 
     url = generalDev.cleanURL(url);
@@ -127,7 +127,7 @@ module.exports.hitInHouseEndpoint = async (
       throw response;
     }
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
 
@@ -141,7 +141,7 @@ module.exports.hitInHouseEndpoint = async (
  */
 module.exports.hitURL = async (url, method = 'get', body = {}) => {
   try {
-    dev.throwErrorIfValueNotPassed(url, 'url');
+    generalDev.throwErrorIfValueNotPassed(url, 'url');
     const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
     url = generalDev.cleanURL(url);
     const response = await axios({
@@ -159,7 +159,7 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
       );
     else throw response;
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
 /** Splits an array into chunks then perform an action on all those chunks, it will perform all the
@@ -178,8 +178,8 @@ module.exports.performActionForSubArrays = async (
   parameters = null,
   sleepPeriodInMilliseconds = 1000
 ) => {
-  dev.throwErrorIfValueNotPassed(action, 'action');
-  dev.throwErrorIfValueNotPassed(array, 'array');
+  generalDev.throwErrorIfValueNotPassed(action, 'action');
+  generalDev.throwErrorIfValueNotPassed(array, 'array');
 
   let responsesArray = [];
   let iteration = 0;
@@ -231,8 +231,8 @@ module.exports.performActionRepeatedly = async (
   parameters = null,
   sleepPeriodInMilliseconds = 1000
 ) => {
-  dev.throwErrorIfValueNotPassed(action, 'action');
-  dev.throwErrorIfValueNotPassed(checkFunction, 'checkFunction');
+  generalDev.throwErrorIfValueNotPassed(action, 'action');
+  generalDev.throwErrorIfValueNotPassed(checkFunction, 'checkFunction');
 
   try {
     return await repeatAction(
@@ -244,7 +244,7 @@ module.exports.performActionRepeatedly = async (
       undefined
     );
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
 

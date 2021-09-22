@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const v = require(`../../values`);
-const dev = require('../dev');
+const generalDev = require('../dev');
 
 const generalFuncs = require('../general');
 const jotformDev = require('../dev/jotform');
@@ -21,11 +21,14 @@ module.exports.submission = async (
   apiKey = v.jotform.apiKey,
   isHipaa = v.jotform.isHipaa
 ) => {
-  dev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
-  dev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
-  dev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
 
-  dev.throwErrorIfValueNotPassed(submissionFieldsObj, 'submissionFieldsObj');
+  generalDev.throwErrorIfValueNotPassed(
+    submissionFieldsObj,
+    'submissionFieldsObj'
+  );
 
   try {
     const baseURL = isHipaa ? 'hipaa-api' : 'api';
@@ -56,6 +59,6 @@ module.exports.submission = async (
       );
     else throw resData;
   } catch (err) {
-    throw dev.formatError(err);
+    throw generalDev.formatError(err);
   }
 };
