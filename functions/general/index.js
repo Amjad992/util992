@@ -282,6 +282,7 @@ repeatAction = async (
  * @returns - Return a true if the object is array
  */
 module.exports.isArray = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Array;
 };
 
@@ -290,6 +291,7 @@ module.exports.isArray = (object) => {
  * @returns - Return a true if the object is an object
  */
 module.exports.isObject = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Object;
 };
 
@@ -298,6 +300,7 @@ module.exports.isObject = (object) => {
  * @returns - Return a true if the object is a function
  */
 module.exports.isFunction = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Function;
 };
 
@@ -306,6 +309,7 @@ module.exports.isFunction = (object) => {
  * @returns - Return a true if the object is a number
  */
 module.exports.isNumber = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Number;
 };
 
@@ -314,6 +318,7 @@ module.exports.isNumber = (object) => {
  * @returns - Return a true if the object is a string
  */
 module.exports.isString = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === String;
 };
 
@@ -322,6 +327,7 @@ module.exports.isString = (object) => {
  * @returns - Return a true if the object is a boolean
  */
 module.exports.isBoolean = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Boolean;
 };
 
@@ -330,6 +336,7 @@ module.exports.isBoolean = (object) => {
  * @returns - Return a true if the object is an empty array
  */
 module.exports.isEmptyArray = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Array && object.length === 0;
 };
 
@@ -338,6 +345,7 @@ module.exports.isEmptyArray = (object) => {
  * @returns - Return a true if the object is an empty object
  */
 module.exports.isEmptyObject = (object) => {
+  if (object === null || object === undefined) return false;
   return object.constructor === Object && object.length === 0;
 };
 
@@ -346,6 +354,7 @@ module.exports.isEmptyObject = (object) => {
  * @returns - Return a true if the object is an empty string
  */
 module.exports.isEmptyString = (object) => {
+  if (object === null || object === undefined) return false;
   return object === '';
 };
 
