@@ -26,8 +26,9 @@ module.exports.submission = async (
 
   try {
     const baseURL = isHipaa ? 'hipaa-api' : 'api';
-    const url = `https://${baseURL}.jotform.com/submission/${submissionId}`;
+    let url = `https://${baseURL}.jotform.com/submission/${submissionId}`;
 
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: 'get',
       url,

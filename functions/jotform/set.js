@@ -35,6 +35,7 @@ module.exports.submission = async (
       jotformDev.prepareFieldsQueryParameters(submissionFieldsObj);
     url = `${url}?${fieldsQueryParameters.body}`;
 
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: 'post',
       url,

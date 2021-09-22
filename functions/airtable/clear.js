@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const v = require(`../../values`);
 const dev = require('../dev');
 

@@ -31,6 +31,7 @@ module.exports.removeMax10Records = async (
     });
     url += `${recordsString}`;
 
+    url = generalDev.cleanURL(url);
     const y = {
       method: 'delete',
       url,
@@ -75,11 +76,13 @@ module.exports.updateMax10Records = async (
   baseId
 ) => {
   try {
-    const url = `${baseURL}${baseId}/${tableName}`;
+    let url = `${baseURL}${baseId}/${tableName}`;
+
     const body = {
       records: recordsArray,
     };
 
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: 'patch',
       url,
@@ -123,7 +126,7 @@ module.exports.createMax10Records = async (
   baseId
 ) => {
   try {
-    const url = `${baseURL}${baseId}/${tableName}`;
+    let url = `${baseURL}${baseId}/${tableName}`;
 
     let formattedRecords = [];
     recordsArray.forEach((record) => {
@@ -136,6 +139,7 @@ module.exports.createMax10Records = async (
       records: formattedRecords,
     };
 
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: 'post',
       url,
@@ -210,6 +214,7 @@ module.exports.getRecords = async (
       });
     }
 
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: 'get',
       url,

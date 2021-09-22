@@ -143,6 +143,7 @@ module.exports.getSubmissions = async (
       url += `&offset=${offset}`;
     }
 
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: 'get',
       url,

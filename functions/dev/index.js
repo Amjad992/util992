@@ -121,3 +121,14 @@ module.exports.formatError = (error) => {
     );
   }
 };
+
+/** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
+ * Clean the url and removing the parts that might cause an issue
+ * @param  {string} url - The url to prepare
+ * @returns - Return the clean url
+ */
+module.exports.cleanURL = (url) => {
+  url = url.includes('#') ? url.replace('#', '%23') : url;
+
+  return url;
+};

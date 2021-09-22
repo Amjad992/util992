@@ -104,10 +104,12 @@ module.exports.hitInHouseEndpoint = async (
 ) => {
   //
   if (endpoint[0] === '/') endpoint = endpoint.substring(1);
-  const url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
+  let url = `${v.g.hitInHouseEndpointBaseURL}/${endpoint}`;
   try {
     dev.throwErrorIfValueNotSet('g', 'hitInHouseEndpointBaseURL');
     const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
+
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: method.toLowerCase(method),
       url,
@@ -141,6 +143,7 @@ module.exports.hitURL = async (url, method = 'get', body = {}) => {
   try {
     dev.throwErrorIfValueNotPassed(url, 'url');
     const bodyToPass = method == 'get' ? JSON.stringify(body) : body;
+    url = generalDev.cleanURL(url);
     const response = await axios({
       method: method.toLowerCase(method),
       url,
