@@ -349,7 +349,7 @@ module.exports.isEmptyArray = (object) => {
  */
 module.exports.isEmptyObject = (object) => {
   if (object === null || object === undefined) return false;
-  return object.constructor === Object && object.length === 0;
+  return object.constructor === Object && Object.keys(object).length === 0;
 };
 
 /** Check if the object passed is an empty string
