@@ -405,3 +405,39 @@
   );
   // returns the string: 'My Name is John Doe'
   ```
+
+### general.generateString
+
+- Filter the elements of a nested JSON object or array by the value of a specific key inside each element
+
+  ```javascript
+  general.filterJSONElementsByKeyValue(object, key, value);
+  ```
+
+- Example
+
+  ```javascript
+  await general.filterJSONElementsByKeyValue(
+    {
+      1: {name: 'Amjad', position: 'Programmer'},
+      2: {name: 'Sarah', position: 'Business Manager'},
+      3: {name: 'Hussam', position: 'Programmer'},
+    },
+    'position',
+    'Programmer'
+  );
+  // returns [{name: 'Amjad', position: 'Programmer'}, {name: 'Hussam', position: 'Programmer'}]
+  ```
+
+  ```javascript
+  await general.filterJSONElementsByKeyValue(
+    [
+      {name: 'Amjad', position: 'Programmer'},
+      {name: 'Sarah', position: 'Business Manager'},
+      {name: 'Hussam', position: 'Programmer'},
+    ],
+    'position',
+    'Programmer'
+  );
+  // returns [{name: 'Amjad', position: 'Programmer'}, {name: 'Hussam', position: 'Programmer'}]
+  ```

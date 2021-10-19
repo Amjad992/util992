@@ -373,3 +373,21 @@ module.exports.generateString = (string, variables, values) => {
   });
   return string;
 };
+
+/** Filter the elements of a nested JSON object or array by the value of a specific key inside each element
+ * @param  {object} object - The nested JSON object or array to filter
+ * @param  {string} key - The key to check its value
+ * @param  {string|number|boolean|null|undefined} value - The value to filter upon
+ * @returns - Return an array of
+ */
+module.exports.filterJSONElementsByKeyValue = async (object, key, value) => {
+  let elements = [];
+  for (let i in object) {
+    await this.sleep(1000);
+    const element = object[i];
+
+    if (element[key] === value) elements.push(element);
+  }
+
+  return elements;
+};
