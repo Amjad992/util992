@@ -419,14 +419,18 @@
   ```javascript
   await general.filterJSONElementsByKeyValue(
     {
-      1: {name: 'Amjad', position: 'Programmer'},
-      2: {name: 'Sarah', position: 'Business Manager'},
-      3: {name: 'Hussam', position: 'Programmer'},
+      emp1: {name: 'Amjad', position: 'Programmer'},
+      emp2: {name: 'Sarah', position: 'Business Manager'},
+      emp3: {name: 'Hussam', position: 'Programmer'},
     },
     'position',
     'Programmer'
   );
-  // returns [{name: 'Amjad', position: 'Programmer'}, {name: 'Hussam', position: 'Programmer'}]
+  // returns
+  [
+    {key: 'emp1', element: {name: 'Amjad', position: 'Programmer'}},
+    {key: 'emp3', element: {name: 'Hussam', position: 'Programmer'}},
+  ];
   ```
 
   ```javascript
@@ -439,5 +443,9 @@
     'position',
     'Programmer'
   );
-  // returns [{name: 'Amjad', position: 'Programmer'}, {name: 'Hussam', position: 'Programmer'}]
+  // returns
+  [
+    {key: '0', element: {name: 'Amjad', position: 'Programmer'}},
+    {key: '2', element: {name: 'Hussam', position: 'Programmer'}},
+  ];
   ```

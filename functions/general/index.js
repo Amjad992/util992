@@ -378,16 +378,15 @@ module.exports.generateString = (string, variables, values) => {
  * @param  {object} object - The nested JSON object or array to filter
  * @param  {string} key - The key to check its value
  * @param  {string|number|boolean|null|undefined} value - The value to filter upon
- * @returns - Return an array of
+ * @returns - Return an array of JSON objects, each object has a key and element, key will include the key of the object filtered in case of Nested Object OR the index of the object filtered in case of Array of Objects, and the element will have the actual JSON object filtered
  */
 module.exports.filterJSONElementsByKeyValue = async (object, key, value) => {
-  let elements = [];
+  let returnedValue = [];
   for (let i in object) {
-    await this.sleep(1000);
     const element = object[i];
 
-    if (element[key] === value) elements.push(element);
+    if (element[key] === value) returnedValue.push({key: i, element});
   }
 
-  return elements;
+  return returnedValue;
 };
