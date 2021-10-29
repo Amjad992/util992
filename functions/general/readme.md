@@ -406,9 +406,9 @@
   // returns the string: 'My Name is John Doe'
   ```
 
-### general.generateString
+### general.filterJSONElementsByKeyValue
 
-- Filter the elements of a nested JSON object or array by the value of a specific key inside each element
+- Filter the elements of a nested JSON object or array that includes a specific value for an element
 
   ```javascript
   general.filterJSONElementsByKeyValue(object, key, value);
@@ -427,10 +427,10 @@
     'Programmer'
   );
   // returns
-  [
-    {key: 'emp1', element: {name: 'Amjad', position: 'Programmer'}},
-    {key: 'emp3', element: {name: 'Hussam', position: 'Programmer'}},
-  ];
+  {
+    emp1: {name: 'Amjad', position: 'Programmer'},
+    emp3: {name: 'Hussam', position: 'Programmer'},
+  }
   ```
 
   ```javascript
@@ -445,7 +445,49 @@
   );
   // returns
   [
-    {key: '0', element: {name: 'Amjad', position: 'Programmer'}},
-    {key: '2', element: {name: 'Hussam', position: 'Programmer'}},
+    {name: 'Amjad', position: 'Programmer'},
+    {name: 'Hussam', position: 'Programmer'},
+  ];
+  ```
+
+### general.filterUniqueJSONElementsByKey
+
+- Filter the elements of a nested JSON object or array by the values of a specific key inside each element
+
+  ```javascript
+  general.filterUniqueJSONElementsByKey(object, key);
+  ```
+
+- Example
+
+  ```javascript
+  await general.filterUniqueJSONElementsByKey(
+    {
+      emp1: {name: 'Amjad', position: 'Programmer'},
+      emp2: {name: 'Sarah', position: 'Business Manager'},
+      emp3: {name: 'Hussam', position: 'Programmer'},
+    },
+    'position'
+  );
+  // returns
+  {
+    emp3: { name: 'Hussam', position: 'Programmer' },
+    emp2: { name: 'Sarah', position: 'Business Manager' }
+  };
+  ```
+
+  ```javascript
+  await general.filterJSONElementsByKeyValue(
+    [
+      {name: 'Amjad', position: 'Programmer'},
+      {name: 'Sarah', position: 'Business Manager'},
+      {name: 'Hussam', position: 'Programmer'},
+    ],
+    'position'
+  );
+  // returns
+  [
+    {name: 'Hussam', position: 'Programmer'},
+    {name: 'Sarah', position: 'Business Manager'},
   ];
   ```

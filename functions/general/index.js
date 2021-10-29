@@ -374,19 +374,59 @@ module.exports.generateString = (string, variables, values) => {
   return string;
 };
 
-/** Filter the elements of a nested JSON object or array by the value of a specific key inside each element
+/** Filter the elements of a nested JSON object or array that includes a specific value for an element
  * @param  {object} object - The nested JSON object or array to filter
  * @param  {string} key - The key to check its value
  * @param  {string|number|boolean|null|undefined} value - The value to filter upon
  * @returns - Return an array of JSON objects, each object has a key and element, key will include the key of the object filtered in case of Nested Object OR the index of the object filtered in case of Array of Objects, and the element will have the actual JSON object filtered
  */
 module.exports.filterJSONElementsByKeyValue = async (object, key, value) => {
-  let returnedValue = [];
+  const isArray = object instanceof Array;
+  let returnedArr = [];
+  let returnedObj = {};
   for (let i in object) {
     const element = object[i];
 
-    if (element[key] === value) returnedValue.push({key: i, element});
+    if (element[key] === value)
+      if (isArray) returnedArr.push(element);
+      else returnedObj[i] = element;
   }
 
-  return returnedValue;
+  if (isArray) return returnedArr;
+  else return returnedObj;
+};
+
+/** Filter the elements of a nested JSON object or array by the values of a specific key inside each element
+ * @param  {object} object - The nested JSON object or array to filter for unique values
+ * @param  {string} key - The key to check its value
+ * @returns - Return an array of JSON objects, each object has a key and element, key will include the key of the object filtered in case of Nested Object OR the index of the object filtered in case of Array of Objects, and the element will have the actual JSON object filtered
+ */
+module.exports.filterUniqueJSONElementsByKey = async (object, key) => {
+  const isArray = object instanceof Array;
+  let returnedArr = [];
+  let returnedObj = {};
+
+  let valuesArr = [];
+  let indexesArr = [];
+  for (let i in object) {
+    const item = object[i];
+    valuesArr.push([item[key], item]);
+    if (!isArray) indexesArr.push([item[key], i]);
+  }
+
+  valuesArr = [...new Map(valuesArr).values()];
+  if (isArray) {
+    returnedArr = valuesArr;
+    return returnedArr;
+  } else {
+    const tempObjArr = valuesArr;
+    const tempIndexesArr = [...new Map(indexesArr).values()];
+
+    for (let i = 0; i < tempObjArr.length; ++i) {
+      returnedObj[tempIndexesArr[i]] = tempObjArr[i];
+    }
+  }
+
+  if (isArray) return returnedArr;
+  else return returnedObj;
 };
