@@ -6,6 +6,91 @@ const generalDev = require('../dev');
 const generalFuncs = require('../general');
 const jotformDev = require('../dev/jotform');
 
+/** Return all forms
+ * @async
+ * @param {number} numberOfForms - The number of submissions to retrieve// (Optional - Default value is the maximum limit in Jotform which is currently 1000) //
+ * @param {string} offset - The offset of submissions required// (Optional - Default is 0) //
+ * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
+ */
+
+module.exports.forms = async (
+  numberOfForms = v.jotform.maximumLimitOfRetrievedForms,
+  offset = 0,
+  apiKey = v.jotform.apiKey,
+  isHipaa = v.jotform.isHipaa
+) => {
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+
+  if (numberOfForms === 0) {
+    return generalFuncs.constructResponse(
+      true,
+      200,
+      `numberOfForms passed is 0`,
+      []
+    );
+  }
+
+  try {
+    let statusCode;
+    let formsRetrievedArray = [];
+
+    let singleResponse = await jotformDev.getForms(
+      numberOfForms,
+      offset,
+      apiKey,
+      isHipaa
+    );
+
+    statusCode = singleResponse.code;
+
+    formsRetrievedArray = singleResponse.body;
+    offset = singleResponse.offset;
+
+    if (await generalFuncs.isEmptyArray(formsRetrievedArray)) {
+      return generalFuncs.constructResponse(
+        true,
+        200,
+        `There are no forms in the account`,
+        []
+      );
+    }
+
+    while (offset && formsRetrievedArray.length < numberOfForms) {
+      singleResponse = await jotformDev.getForms(
+        numberOfForms,
+        offset,
+        apiKey,
+        isHipaa
+      );
+
+      statusCode = singleResponse.code;
+
+      formsRetrievedArray = [...formsRetrievedArray, ...singleResponse.body];
+
+      offset = singleResponse.offset;
+    }
+
+    if (formsRetrievedArray.length > numberOfForms)
+      formsRetrievedArray = formsRetrievedArray.slice(0, numberOfForms);
+
+    if (singleResponse.code < 300)
+      return generalFuncs.constructResponse(
+        true,
+        statusCode,
+        `Retrieved ${formsRetrievedArray.length} forms in the account`,
+        formsRetrievedArray,
+        {offset: singleResponse.offset}
+      );
+    else throw singleResponse;
+  } catch (err) {
+    throw generalDev.formatError(err);
+  }
+};
+
 /** Return a Jotform submission
  * @async
  * @param {string} submissionId - the submission Id to be retrieved
@@ -138,7 +223,7 @@ module.exports.submissions = async (
       return generalFuncs.constructResponse(
         true,
         statusCode,
-        `Retrieved all submissions for form with id ${formId}`,
+        `Retrieved ${submissionsRetrievedArray.length} submissions for form with id ${formId}`,
         submissionsRetrievedArray,
         {offset: singleResponse.offset}
       );

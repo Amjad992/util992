@@ -3,7 +3,55 @@ const axios = require('axios');
 const generalFuncs = require('../general');
 const generalDev = require('../dev');
 
-const v = require(`../../values`);
+/** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
+ * @param {number} numberOfForms - An object of all the fields to include in the submission
+ * @param {number} offset - The offset of the request
+ * @param {string} formId - The form id// (Optional - configurable through the config.jotform object) //
+ * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** The body will the query parameters string created
+ ** In case of error (error of execution), it will throw an exception with an object following the same format.
+ */
+module.exports.getForms = async (numberOfForms, offset, apiKey, isHipaa) => {
+  try {
+    const baseURL = isHipaa ? 'hipaa-api' : 'api';
+    let url = `https://${baseURL}.jotform.com/user/forms?apiKey=${apiKey}`;
+    if (numberOfForms) url += `&limit=${numberOfForms}`;
+
+    if (offset) {
+      url += `&offset=${offset}`;
+    }
+
+    url = generalDev.cleanURL(url);
+    const response = await axios({
+      method: 'get',
+      url,
+      headers: {
+        APIKEY: apiKey,
+      },
+    });
+
+    const resData = response.data;
+
+    const offsetObj = resData.resultSet;
+    newOffset =
+      offsetObj.limit === offsetObj.count
+        ? offsetObj.offset + offsetObj.count
+        : null;
+
+    const forms = resData.content;
+    return generalFuncs.constructResponse(
+      true,
+      response.code,
+      `Retrieved ${forms.length} forms`,
+      forms,
+      {offset: newOffset}
+    );
+  } catch (err) {
+    throw err;
+  }
+};
 
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
 /** Filter submissions with specific flag value
@@ -116,8 +164,8 @@ module.exports.prepareFieldsQueryParameters = (fieldsObj) => {
 };
 
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
- * @param {number} numberOfSubmissions - an object of all the fields to include in the submission
- * @param {number} numberOfSubmissions - an object of all the fields to include in the submission
+ * @param {number} numberOfSubmissions - An object of all the fields to include in the submission
+ * @param {number} offset - The offset of the request
  * @param {string} formId - The form id// (Optional - configurable through the config.jotform object) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
  * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
@@ -125,7 +173,6 @@ module.exports.prepareFieldsQueryParameters = (fieldsObj) => {
  ** The body will the query parameters string created
  ** In case of error (error of execution), it will throw an exception with an object following the same format.
  */
-
 module.exports.getSubmissions = async (
   numberOfSubmissions,
   offset,

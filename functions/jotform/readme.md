@@ -12,6 +12,49 @@ config.jotform.formId('987'); // Default value is false
 config.jotform.isHipaa(true); // Default value is false
 ```
 
+## **_Getting Forms_**
+
+### get.forms
+
+- Return an array of forms
+  ```javascript
+  get.forms(limit, offset, apiKey, isHipaa);
+  ```
+- Example
+
+  ```javascript
+  await get.forms()
+  // returns all forms
+  await get.forms(10, 20)
+  // returns the forms from 21 to 30
+  {
+    success: true,
+    code: 200,
+    message: 'Retrieved 10 forms in the account',
+    body: {
+      [
+        {
+          id: '210963463790061',
+          username: 'amjad992',
+          title: 'Contact Us',
+          height: '539',
+          status: 'ENABLED',
+          created_at: '2021-04-07 19:17:01',
+          updated_at: '2021-04-18 18:59:01',
+          last_submission: null,
+          new: '0',
+          count: '0',
+          type: 'LEGACY',
+          favorite: '0',
+          archived: '0',
+          url: 'https://hipaa.jotform.com/210963463790061'
+        },
+        ....
+      ]
+    }
+  }
+  ```
+
 ## **_Getting Submissions_**
 
 ### get.submission
@@ -60,7 +103,7 @@ config.jotform.isHipaa(true); // Default value is false
 
 ### get.submissions
 
-- Return an array of all submissions
+- Return an array of submissions
   ```javascript
   get.submissions(limit, offset, formId, apiKey, isHipaa);
   ```
@@ -74,7 +117,7 @@ config.jotform.isHipaa(true); // Default value is false
   {
     success: true,
     code: 200,
-    message: 'Retrieved all submissions for form with id 987',
+    message: 'Retrieved 10 submissions for form with id 987',
     body: {
       [
         {
@@ -221,7 +264,7 @@ config.jotform.isHipaa(true); // Default value is false
   }
   ```
 
-  ## **_Updating Submissions_**
+## **_Updating Submissions_**
 
 ### update.submission
 
