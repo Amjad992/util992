@@ -6,6 +6,51 @@ const generalDev = require('../dev');
 const generalFuncs = require('../general');
 const jotformDev = require('../dev/jotform');
 
+/** Return a Jotform form
+ * @async
+ * @param {string} formId - the form Id to be retrieved
+ * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
+ */
+module.exports.form = async (
+  formId = v.jotform.formId,
+  apiKey = v.jotform.apiKey,
+  isHipaa = v.jotform.isHipaa
+) => {
+  generalDev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+
+  try {
+    const baseURL = isHipaa ? 'hipaa-api' : 'api';
+    let url = `https://${baseURL}.jotform.com/form/${formId}`;
+
+    url = generalDev.cleanURL(url);
+    const response = await axios({
+      method: 'get',
+      url,
+      headers: {
+        APIKEY: apiKey,
+      },
+    });
+
+    const resData = response.data;
+    console.log(resData);
+    if (resData.responseCode < 300)
+      return generalFuncs.constructResponse(
+        true,
+        resData.responseCode,
+        `Retrieved form ${formId} from Jotform`,
+        resData.content
+      );
+    else throw resData;
+  } catch (err) {
+    throw generalDev.formatError(err);
+  }
+};
+
 /** Return all forms
  * @async
  * @param {number} numberOfForms - The number of submissions to retrieve// (Optional - Default value is the maximum limit in Jotform which is currently 1000) //
@@ -15,7 +60,6 @@ const jotformDev = require('../dev/jotform');
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
  ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
  */
-
 module.exports.forms = async (
   numberOfForms = v.jotform.maximumLimitOfRetrievedForms,
   offset = 0,

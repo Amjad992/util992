@@ -14,6 +14,39 @@ config.jotform.isHipaa(true); // Default value is false
 
 ## **_Getting Forms_**
 
+### get.form
+
+- Return a specific form from Jotform
+  ```javascript
+  get.submission(formId, apiKey, isHipaa);
+  ```
+- Example
+  ```javascript
+  await get.submission('987654321', undefined, true)
+  // returns
+  {
+    success: true,
+    code: 200,
+    message: 'Retrieved form 987654321 from Jotform',
+    body: {
+        id: '987654321',
+        username: 'amjad992',
+        title: 'Contact Us',
+        height: '539',
+        status: 'ENABLED',
+        created_at: '2021-04-07 19:17:01',
+        updated_at: '2021-04-18 18:59:01',
+        last_submission: null,
+        new: '0',
+        count: '0',
+        type: 'LEGACY',
+        favorite: '0',
+        archived: '0',
+        url: 'https://hipaa.jotform.com/987654321'
+    }
+  }
+  ```
+
 ### get.forms
 
 - Return an array of forms
@@ -34,7 +67,7 @@ config.jotform.isHipaa(true); // Default value is false
     body: {
       [
         {
-          id: '210963463790061',
+          id: '987654321',
           username: 'amjad992',
           title: 'Contact Us',
           height: '539',
@@ -47,7 +80,7 @@ config.jotform.isHipaa(true); // Default value is false
           type: 'LEGACY',
           favorite: '0',
           archived: '0',
-          url: 'https://hipaa.jotform.com/210963463790061'
+          url: 'https://hipaa.jotform.com/987654321'
         },
         ....
       ]
