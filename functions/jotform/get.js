@@ -37,7 +37,6 @@ module.exports.form = async (
     });
 
     const resData = response.data;
-    console.log(resData);
     if (resData.responseCode < 300)
       return generalFuncs.constructResponse(
         true,
