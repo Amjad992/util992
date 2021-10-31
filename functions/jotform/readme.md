@@ -18,11 +18,11 @@ config.jotform.isHipaa(true); // Default value is false
 
 - Return a specific form from Jotform
   ```javascript
-  get.submission(formId, apiKey, isHipaa);
+  get.form(formId, apiKey, isHipaa);
   ```
 - Example
   ```javascript
-  await get.submission('987654321', undefined, true)
+  await get.form('987654321', undefined, true)
   // returns
   {
     success: true,
@@ -264,6 +264,78 @@ config.jotform.isHipaa(true); // Default value is false
           }
         }
       ]
+    }
+  }
+  ```
+
+## **_Getting Questions_**
+
+### get.questions
+
+- Return a form questions
+  ```javascript
+  get.questions(formId, apiKey, isHipaa);
+  ```
+- Example
+  ```javascript
+  await get.questions('987654321', undefined, true)
+  // returns
+  {
+    success: true,
+    code: 200,
+    message: 'Retrieved questions of form 987654321 from Jotform',
+    body: {
+      '3': {
+        compoundHint: '',
+        description: '',
+        labelAlign: 'Auto',
+        middle: 'No',
+        name: 'patientName',
+        order: '2',
+        prefix: 'No',
+        prefixChoices: '',
+        protected: 'Yes',
+        qid: '3',
+        readonly: 'No',
+        required: 'No',
+        sublabels: {
+          prefix: 'Prefix',
+          first: 'First Name',
+          middle: 'Middle Name',
+          last: 'Last Name',
+          suffix: 'Suffix'
+        },
+        suffix: 'No',
+        text: 'Patient Name',
+        type: 'control_fullname'
+      },
+      '6': {
+        allowCustomDomains: 'No',
+        allowedDomains: '',
+        autoFixed: 'No',
+        confirmation: 'No',
+        confirmationHint: 'example@example.com',
+        confirmationSublabel: 'Confirm Email',
+        defaultValue: '',
+        description: '',
+        disallowFree: 'No',
+        domainCheck: 'No',
+        hint: '',
+        labelAlign: 'Auto',
+        maxsize: '',
+        name: 'email',
+        order: '5',
+        protected: 'Yes',
+        qid: '6',
+        readonly: 'No',
+        required: 'No',
+        size: '310',
+        subLabel: 'example@example.com',
+        text: 'Email',
+        type: 'control_email',
+        validation: 'Email',
+        verificationCode: 'No'
+      },
     }
   }
   ```

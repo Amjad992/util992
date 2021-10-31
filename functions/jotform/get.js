@@ -8,7 +8,7 @@ const jotformDev = require('../dev/jotform');
 
 /** Return a Jotform form
  * @async
- * @param {string} formId - the form Id to be retrieved
+ * @param {string} formId - the form Id to be retrieved // (Optional - configurable through the config.jotform object) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
  * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
@@ -184,7 +184,7 @@ module.exports.submission = async (
  * @async
  * @param {number} numberOfSubmissions - The number of submissions to retrieve// (Optional - Default value is the maximum limit in Jotform which is currently 1000) //
  * @param {string} offset - The offset of submissions required// (Optional - Default is 0) //
- * @param {string} formId - The form id// (Optional - configurable through the config.jotform object) //
+ * @param {string} formId - The form id // (Optional - configurable through the config.jotform object) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
  * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
@@ -281,7 +281,7 @@ module.exports.submissions = async (
  * @param {string} fieldValue - the value needed to locate in submission (e.g. 7th avenue)
  * @param {number} fieldId - the id of the field needed to check (e.g. 5)
  * @param {string} subFieldId - the sub id of the field needed, (Optional - this is used in a field that contain other fields like address field for example (e.g. add_line1))
- * @param {string} formId - The form id// (Optional - configurable through the config.jotform object) //
+ * @param {string} formId - The form id // (Optional - configurable through the config.jotform object) //
  * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
  * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
  * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
@@ -337,6 +337,50 @@ module.exports.submissionsByFieldValue = async (
         filteredSubmissions
       );
     else throw err;
+  } catch (err) {
+    throw generalDev.formatError(err);
+  }
+};
+
+/** Return a form questions
+ * @async
+ * @param {string} formId - the form Id to retrieve questions for // (Optional - configurable through the config.jotform object) //
+ * @param {string} apiKey - The api key // (Optional - configurable through the config.jotform object) //
+ * @param {boolean} isHipaa - Is Hipaa Account or Not // (Optional - configurable through the config.jotform object) //
+ * @returns - Return a response following this module's format (Created using func.constructResponse functionality)
+ ** In case of error (error of execution e.g. no url provided, not url hit error response), it will throw an exception with an object following the same format, for the url hit error responses, they will be returned as success but full body will be in the body value
+ */
+module.exports.questions = async (
+  formId = v.jotform.formId,
+  apiKey = v.jotform.apiKey,
+  isHipaa = v.jotform.isHipaa
+) => {
+  generalDev.throwErrorIfValueNotPassedAndNotSet(formId, 'jotform', 'formId');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(apiKey, 'jotform', 'apiKey');
+  generalDev.throwErrorIfValueNotPassedAndNotSet(isHipaa, 'jotform', 'isHipaa');
+
+  try {
+    const baseURL = isHipaa ? 'hipaa-api' : 'api';
+    let url = `https://${baseURL}.jotform.com/form/${formId}/questions`;
+
+    url = generalDev.cleanURL(url);
+    const response = await axios({
+      method: 'get',
+      url,
+      headers: {
+        APIKEY: apiKey,
+      },
+    });
+
+    const resData = response.data;
+    if (resData.responseCode < 300)
+      return generalFuncs.constructResponse(
+        true,
+        resData.responseCode,
+        `Retrieved questions of form ${formId} from Jotform`,
+        resData.content
+      );
+    else throw resData;
   } catch (err) {
     throw generalDev.formatError(err);
   }
