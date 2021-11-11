@@ -128,7 +128,7 @@ module.exports.formatError = (error) => {
  * @returns - Return the clean url
  */
 module.exports.cleanURL = (url) => {
-  url = url.includes('#') ? url.replace('#', '%23') : url;
+  url = encodeURI(url);
 
   return url;
 };
