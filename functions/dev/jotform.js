@@ -109,7 +109,10 @@ module.exports.filterSubmissionsByAnswer = async (
       const submission = submissionsArr[i];
       const answers = submission.answers;
 
-      if (answers[id].answer[subId] === value || answers[id].answer === value)
+      if (
+        answers[id].answer &&
+        (answers[id].answer === value || answers[id].answer[subId] === value)
+      )
         filteredSubmissions.push(submission);
     }
 
