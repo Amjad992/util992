@@ -262,18 +262,21 @@ module.exports.submissions = async (
         numberOfSubmissions
       );
 
-    let filteredRes = await jotformDev.filterSubmissionsByFlag(
+    const activeSubmissionsRes = await jotformDev.filterSubmissionsByFlag(
       submissionsRetrievedArray,
       v.jotform.submissionActiveStatusFlag,
       'status'
     );
-    filteredRes = await jotformDev.filterSubmissionsByFlag(
+    const customSubmissionsRes = await jotformDev.filterSubmissionsByFlag(
       submissionsRetrievedArray,
       v.jotform.submissionCustomStatusFlag,
       'status'
     );
 
-    submissionsRetrievedArray = filteredRes.body;
+    submissionsRetrievedArray = [
+      ...customSubmissionsRes.body,
+      ...activeSubmissionsRes.body,
+    ];
 
     if (singleResponse.code < 300)
       return generalFuncs.constructResponse(
@@ -330,10 +333,19 @@ module.exports.submissionsByFieldValue = async (
       v.jotform.submissionActiveStatusFlag,
       'status'
     );
-    const activeSubmissions = activeSubmissionsRes.body;
+    const customSubmissionsRes = await jotformDev.filterSubmissionsByFlag(
+      allSubmissions.body,
+      v.jotform.submissionCustomStatusFlag,
+      'status'
+    );
+
+    const submissions = [
+      ...customSubmissionsRes.body,
+      ...activeSubmissionsRes.body,
+    ];
 
     const filteredSubmissionsRes = await jotformDev.filterSubmissionsByAnswer(
-      activeSubmissions,
+      submissions,
       fieldValue,
       fieldId,
       subFieldId
