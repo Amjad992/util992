@@ -262,6 +262,19 @@ module.exports.submissions = async (
         numberOfSubmissions
       );
 
+    let filteredRes = await jotformDev.filterSubmissionsByFlag(
+      submissionsRetrievedArray,
+      v.jotform.submissionActiveStatusFlag,
+      'status'
+    );
+    filteredRes = await jotformDev.filterSubmissionsByFlag(
+      submissionsRetrievedArray,
+      v.jotform.submissionCustomStatusFlag,
+      'status'
+    );
+
+    submissionsRetrievedArray = filteredRes.body;
+
     if (singleResponse.code < 300)
       return generalFuncs.constructResponse(
         true,
