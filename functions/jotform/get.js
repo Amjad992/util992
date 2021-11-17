@@ -6,6 +6,8 @@ const generalDev = require('../dev');
 const generalFuncs = require('../general');
 const jotformDev = require('../dev/jotform');
 
+axios.default.timeout = 3600000;
+
 /** Return a Jotform form
  * @async
  * @param {string} formId - the form Id to be retrieved // (Optional - configurable through the config.jotform object) //

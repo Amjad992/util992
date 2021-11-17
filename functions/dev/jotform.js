@@ -3,6 +3,8 @@ const axios = require('axios');
 const generalFuncs = require('../general');
 const generalDev = require('../dev');
 
+axios.default.timeout = 3600000;
+
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
  * @param {number} numberOfForms - An object of all the fields to include in the submission
  * @param {number} offset - The offset of the request

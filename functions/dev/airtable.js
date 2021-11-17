@@ -3,6 +3,8 @@ const axios = require('axios');
 const generalFuncs = require('../general');
 const generalDev = require('../dev');
 
+axios.default.timeout = 3600000;
+
 /** DO NOT USE THIS FUNCTION, IT'S FOR INTERNAL USE ONLY
 /** Remove a maximum 10 of records from a table
  * @async

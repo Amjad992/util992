@@ -5,6 +5,8 @@ const generalDev = require('../dev');
 
 const generalThis = this;
 
+axios.default.timeout = 3600000;
+
 /** Return a JSON object with a key and a message stating that the method endpoint is not supported
  * @param  {string} method - The HTTP method not supported (e.g. POST) // (Optional) //
  * @param  {string} key - The indicative property key (e.g. error) // (Optional - configurable through the config.g object) //

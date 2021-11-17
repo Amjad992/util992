@@ -6,6 +6,8 @@ const generalDev = require('../dev');
 const generalFuncs = require('../general');
 const jotformDev = require('../dev/jotform');
 
+axios.default.timeout = 3600000;
+
 /** Return a Jotform submission
  * @async
  * @param {object} submissionFieldsObj - A JSON object that has all the fields to add, each field will be a key of the json, and if the field has sub fields, the value would be itself another JSON object (e.g. {4: {addr_line1: '7th avenue'}} OR {3: 'contact@amjadmajed.com})
