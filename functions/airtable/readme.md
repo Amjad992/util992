@@ -210,7 +210,7 @@ config.airtable.apiKey(['Table 1', 'Table 2']); // Default value is []
 - Update the records passed into airtable
 - The records have to be in JSON format, with id and fields attributes that is also a JSON its keys are identical to the column name in Airtable
   ```javascript
-  set.records{tableName, recordsArray, apiKey, baseURL, baseId}
+  update.records{tableName, recordsArray, apiKey, baseURL, baseId}
   ```
 - Example
 
